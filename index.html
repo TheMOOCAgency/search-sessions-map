@@ -242,7 +242,6 @@
           var fieldSearchValue = $('#'+field.name).val();
           selectedFilters.push({name:field.name, value:fieldSearchValue})
         })
-        console.log(selectedFilters);
         var selectedLocations = saveLocations.filter(function(location){
           var validLocation=true;
           selectedFilters.map(function(filter){
