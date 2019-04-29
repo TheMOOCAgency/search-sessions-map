@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Courses Sessions</title>
+    <!-- BOOTSTRAP-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- DATE PICKER -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <!-- MOMENT JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/fr.js"></script>
+
+    <style>
+      #map {
+        height: 50vh;
+        width: 60%;
+      }
+      #mapWrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 20px;
+      }
+      #searchWrapper{
+        padding:20px;
+      }
+      p{
+        margin:0;
+      }
+      .inputWrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .titleSearch{
+        padding: 20px 0px;
+        font-weight: 900;
+        font-size:2rem;
+      }
+      .hide{
+        display: none;
+      },
+      .custom-select{
+        margin: 0!important;
+      }
+      .mainColor{
+        color:#1a1c85
+      }
+      .secondColor{
+        color:#f7c30d;
+      }
+      .secondColorBg{
+        background-color:#f7c30d;
+      }
+      .filterIntro{
+        font-weight: bold;
+      }
+      .textBold{
+        font-weight: bold;
+      }
+      button{
+        border: 0;
+        padding: 10px 20px;
+        border-radius: 5px;
+      }
+      select, input{
+        background-color: lightgray!important;
+        color: gray!important;
+        font-weight: 500!important;
+      }
+      #searchCourses{
+        padding: 20px 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="searchWrapper" class="container">
+      <p class="titleSearch mainColor">Toutes les prochaines sessions en région</p>
+      <div class="">
+          <p class="filterIntro mainColor">Filtrer par</p>
+        </div>
+      <div id="searchCourses">
+        <div class="row">
+
+          <div class="col-md-3 inputWrapper hide" id="datePickerWrap">
+            <div class="input-group flex-nowrap"><input type="text" id="datepicker" class="form-control mb-3" placeholder="Date" aria-label="organisme"></div>
+          </div>
+        </div>
+        <div class="">
+          <button id="search" class="secondColorBg mainColor textBold">Rechercher</button>
+        </div>
+      </div>
+    </div>
+    <div id="mapWrapper">
+      <div id="map"></div>
+    </div>
+
+
+    <!-- BOOTSTRAP-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+    <!-- DATE PICKER-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+      $(document).ready(function() {
+        $( "#datepicker" ).daterangepicker();
+      } );
+    </script>
+
+    <!-- GOOGLE MAPS-->
+    <script>
+
+      // DATA
+      var fields=[
+        {
+          label:"Organisme",
+          values:[
+            {label:"Acme", name:"Acme"},
+            {label:"Footbook", name:"Footbook"},
+            {label:"Pear", name:"Pear"},
+            {label:"Amazing & Cie", name:"Amazing & Cie"},
+          ],
+          type:"select",
+          name:"organisme"
+        },
+        {
+          label:"Département",
+          name:"departement",
+          values:[
+            {label:"Departement 1", name:"dep1"},
+            {label:"Departement 2", name:"dep2"},
+            {label:"Departement 3", name:"dep3"},
+            {label:"Departement 4", name:"dep4"},
+            {label:"Departement 5", name:"dep5"}
+          ],
+          type:"select"
+        },
+        {
+          label:"Région",
+          name:"region",
+          values:[
+            {label:"Australie Occidentale", name:"WA"},
+            {label:"Australie Méridionale", name:"SA"},
+            {label:"Queensland",name:"QLD"},
+            {label:"Territoire du Nord",name:"NT"},
+            {label:"Nouvelle Galles",name:"VIC"}
+          ],
+          type:"select"
+        },
+        {
+          label:"Date",
+          type:"dateRangePicker",
+          name:"datepicker"
+        },
+      ]
+
+      var locations = [
+        {lat: -31.563910, lng: 147.154312, organisme:"Pear", region:"WA", departement:"dep1", date:"09/04/19"},
+        {lat: -33.718234, lng: 150.363181, organisme:"footbook", region:"NT", departement:"dep1", date:"11/04/19"},
+        {lat: -33.727111, lng: 150.371124, organisme:"Acme", region:"WA", departement:"dep2", date:"13/04/19"},
+        {lat: -33.848588, lng: 151.209834, organisme:"Amazing & Cie", region:"QLD", departement:"dep1", date:"15/04/19"},
+        {lat: -33.851702, lng: 151.216968, organisme:"Acme", region:"NT", departement:"dep2", date:"17/04/19"},
+        {lat: -34.671264, lng: 150.863657, organisme:"Acme", region:"NT", departement:"dep2", date:"19/04/19"},
+        {lat: -35.304724, lng: 148.662905, organisme:"Acme", region:"WA", departement:"dep3", date:"21/04/19"},
+        {lat: -36.817685, lng: 175.699196, organisme:"Acme", region:"NT", departement:"dep3", date:"23/04/19"},
+        {lat: -36.828611, lng: 175.790222, organisme:"Amazing & Cie", region:"NT", departement:"dep3", date:"25/04/19"},
+        {lat: -37.750000, lng: 145.116667, organisme:"Amazing & Cie", region:"NT",departement:"dep3", date:"27/04/19"},
+        {lat: -37.759859, lng: 145.128708, organisme:"Acme", region:"QLD", departement:"dep4", date:"29/04/19"},
+        {lat: -37.765015, lng: 145.133858, organisme:"Footbook", region:"NT", departement:"dep4", date:"31/03/19"},
+        {lat: -37.770104, lng: 145.143299, organisme:"Acme", region:"NT", departement:"dep4", date:"02/04/19"},
+        {lat: -37.773700, lng: 145.145187, organisme:"Amazing & Cie", region:"NT", departement:"dep4", date:"04/04/19"},
+        {lat: -37.774785, lng: 145.137978, organisme:"Pear", region:"QLD", departement:"dep4", date:"06/04/19"},
+        {lat: -37.819616, lng: 144.968119, organisme:"Amazing & Cie", region:"NT", departement:"dep4", date:"08/04/19"},
+        {lat: -38.330766, lng: 144.695692, organisme:"Acme", region:"NT", departement:"dep4", date:"10/04/19"},
+        {lat: -39.927193, lng: 175.053218, organisme:"Footbook", region:"NT", departement:"dep5", date:"12/04/19"},
+        {lat: -41.330162, lng: 174.865694, organisme:"Pear", region:"VIC", departement:"dep5", date:"14/04/19"},
+        {lat: -42.734358, lng: 147.439506, organisme:"Acme", region:"NT", departement:"dep5", date:"16/04/19"},
+        {lat: -42.734358, lng: 147.501315, organisme:"Footbook", region:"SA", departement:"dep5", date:"18/04/19"},
+        {lat: -42.735258, lng: 147.438000, organisme:"Pear", region:"WA", departement:"dep5", date:"20/04/19"},
+        {lat: -43.999792, lng: 170.463352, organisme:"Acme", region:"NT", departement:"dep5", date:"22/04/19"}
+      ]
+      var saveLocations = locations;
+
+      // FUNCTIONS
+      function buildSearchBar(fields){
+        fields.map(function(field){
+          if(field.type==="select"){
+            var fieldInput='<div class="col-md-2 inputWrapper"> <select class="custom-select mb-3" id="'+field.name+'"><option value="'+field.name+'">'+field.label+'</option>';
+            field.values.map((value)=>{
+              fieldInput+='<option value="'+value.name+'">'+value.label+'</option>'
+            })  
+            fieldInput+='</select>';
+            $('#searchCourses .row').append(fieldInput);
+          }
+          else if(field.type==="dateRangePicker"){
+          $('#datePickerWrap').removeClass('hide'); 
+          }
+        })
+      }
+      
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 3,
+          center: {lat: -28.024, lng: 140.887}
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+          });
+        });
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        }
+
+
+      function filterData(){
+        var selectedFilters=[];  
+        fields.map(function(field){
+          var fieldSearchValue = $('#'+field.name).val();
+          selectedFilters.push({name:field.name, value:fieldSearchValue})
+        })
+        console.log(selectedFilters);
+        var selectedLocations = saveLocations.filter(function(location){
+          var validLocation=true;
+          selectedFilters.map(function(filter){
+            //Avoid cases where field is datepicker type / search field value = search field name => means all results
+            if(filter.name!=="datepicker" && filter.name!=filter.value && location[filter.name]!==filter.value){
+              validLocation=false;
+            }
+            else if(filter.name==="datepicker"){
+              var date1=filter.value.split(' - ')[0];
+              var date2=filter.value.split(' - ')[1];
+              if(location['date']<date1 || location['date']>date2){
+                validLocation=false;
+              }
+            }
+          })
+          return validLocation;
+        })
+        return selectedLocations;
+      }
+
+      // ACTIONS
+      $(document).ready(function(){
+        var saveLocations=locations;
+        buildSearchBar(fields);
+      })
+      $("#search").on('click', function(){
+        locations = filterData();
+        initMap();    
+      })
+
+
+
+
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZPfRQkb-RFe5AUzHHmW_Q2ojvmIG8-AU&callback=initMap">
+    </script>
+  </body>
+</html>
