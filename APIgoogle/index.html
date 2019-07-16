@@ -103,30 +103,6 @@
         width: 400px;
         margin: 20px;
       }
-      /* The popup bubble styling. */
-      .popup-bubble {
-        /* Position the bubble centred-above its parent. */
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: translate(-50%, -100%);
-        /* Style the bubble. */
-        background-color: white;
-        padding: 5px;
-        border-radius: 5px;
-        font-family: sans-serif;
-        overflow-y: auto;
-        max-height: 60px;
-        box-shadow: 0px 2px 10px 1px rgba(0,0,0,0.5);
-      }
-      /* JavaScript will position this div at the bottom of the popup tip. */
-      .popup-container {
-        cursor: auto;
-        height: 0;
-        position: absolute;
-        /* The max width of the info window. */
-        width: 200px;
-      }
     </style>
   </head>
   <body>
@@ -225,29 +201,12 @@
       ]
 
       var locations = [
-        {lat: -31.563910, lng: 147.154312, organisme:"Pear", region:"WA", departement:"dep1", date:"09/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Operation Excellence"},
-        {lat: -33.718234, lng: 150.363181, organisme:"footbook", region:"NT", departement:"dep1", date:"11/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Prism of Possibilities"},
-        {lat: -33.727111, lng: 150.371124, organisme:"Acme", region:"WA", departement:"dep2", date:"13/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"The Power of You"},
-        {lat: -33.848588, lng: 151.209834, organisme:"Amazing & Cie", region:"QLD", departement:"dep1", date:"15/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Shoot for the Stars"},
-        {lat: -33.851702, lng: 151.216968, organisme:"Acme", region:"NT", departement:"dep2", date:"17/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Power Up!"},
-        {lat: -34.671264, lng: 150.863657, organisme:"Acme", region:"NT", departement:"dep2", date:"19/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Pride and Performance"},
-        {lat: -35.304724, lng: 148.662905, organisme:"Acme", region:"WA", departement:"dep3", date:"21/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Peak Performance"},
-        {lat: -36.817685, lng: 175.699196, organisme:"Acme", region:"NT", departement:"dep3", date:"23/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Navigating the Future"},
-        {lat: -36.828611, lng: 175.790222, organisme:"Amazing & Cie", region:"NT", departement:"dep3", date:"25/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"New Economy Efficiencies/Old Economy Relationships"},
-        {lat: -37.750000, lng: 145.116667, organisme:"Amazing & Cie", region:"NT",departement:"dep3", date:"27/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Lighting the Future"},
-        {lat: -37.759859, lng: 145.128708, organisme:"Acme", region:"QLD", departement:"dep4", date:"29/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Legendary Leadership Lessons"},
-        {lat: -37.765015, lng: 145.133858, organisme:"Footbook", region:"NT", departement:"dep4", date:"31/03/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Journey to the Top"},
-        {lat: -37.770104, lng: 145.143299, organisme:"Acme", region:"NT", departement:"dep4", date:"02/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Historic Proportions"},
-        {lat: -37.773700, lng: 145.145187, organisme:"Amazing & Cie", region:"NT", departement:"dep4", date:"04/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Great Expectations"},
-        {lat: -37.774785, lng: 145.137978, organisme:"Pear", region:"QLD", departement:"dep4", date:"06/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Facing the Challenges"},
-        {lat: -37.819616, lng: 144.968119, organisme:"Amazing & Cie", region:"NT", departement:"dep4", date:"08/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Getting It Done"},
-        {lat: -38.330766, lng: 144.695692, organisme:"Acme", region:"NT", departement:"dep4", date:"10/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Discover the Difference"},
-        {lat: -39.927193, lng: 175.053218, organisme:"Footbook", region:"NT", departement:"dep5", date:"12/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: false, url: "", title:"Customer Focus"},
-        {lat: -41.330162, lng: 174.865694, organisme:"Pear", region:"VIC", departement:"dep5", date:"14/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Breaking Out of Your Shell"},
-        {lat: -42.734358, lng: 147.439506, organisme:"Acme", region:"NT", departement:"dep5", date:"16/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"3D System Integration, 3DIC, IEEE International Conference on"},
-        {lat: -42.734358, lng: 147.501315, organisme:"Footbook", region:"SA", departement:"dep5", date:"18/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"IEE Colloquium on 3D Imaging and Analysis of Depth/Range Images"},
-        {lat: -42.735258, lng: 147.438000, organisme:"Pear", region:"WA", departement:"dep5", date:"20/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"21st Century Energy Needs Materials, Systems and Applications (ICTFCEN)"},
-        {lat: -43.999792, lng: 170.463352, organisme:"Acme", region:"NT", departement:"dep5", date:"22/04/2019", dateFin:"09/04/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Proceedings of the 1995 International Conference on 100 Years of Radio"}
+        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"Gironde", date:"13/11/2019", dateFin:"29/01/2020", lieu: "Bordeaux", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Bordeaux"},
+        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"Loire-Atlantique", date:"05/11/2019", dateFin:"15/01/2019", lieu: "Nantes", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Nantes"},
+        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", date:"16/10/2019", dateFin:"20/11/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Paris"},
+        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", date:"03/11/2019", dateFin:"22/12/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Paris"},
+        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"Rhône", date:"19/11/2019", dateFin:"28/01/2020", lieu: "Lyon", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Lyon"},
+        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", date:"29/10/2019", dateFin:"10/12/2019", lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Toulouse"},
       ]
       var saveLocations = locations;
 
@@ -270,8 +229,8 @@
       
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 3,
-          center: {lat: -28.024, lng: 140.887}
+          zoom: 5,
+          center: {lat: 46.8534, lng: 2.3488}
         });
 
         // Create an array of alphabetical characters used to label the markers.
@@ -292,8 +251,8 @@
             icon: {
               url: './icons/trainingIcon.png', // url
               scaledSize: new google.maps.Size(50, 50), // scaled size
-              origin: new google.maps.Point(0,0), // origin
-              anchor: new google.maps.Point(0, 0), // anchor
+              origin: new google.maps.Point(0, 0), // origin
+              anchor: new google.maps.Point(25, 50), // anchor
               labelOrigin: new google.maps.Point(25, 18), // label offset
             },
           });
