@@ -157,58 +157,81 @@
     <script>
 
       // DATA
-      var fields=[
-        {
-          label:"Région",
-          name:"region",
-          values:[
-            {label:"Australie Occidentale", name:"WA"},
-            {label:"Australie Méridionale", name:"SA"},
-            {label:"Queensland",name:"QLD"},
-            {label:"Territoire du Nord",name:"NT"},
-            {label:"Nouvelle Galles",name:"VIC"}
-          ],
-          type:"select"
-        },
-        {
-          label:"Département",
-          name:"departement",
-          values:[
-            {label:"Departement 1", name:"dep1"},
-            {label:"Departement 2", name:"dep2"},
-            {label:"Departement 3", name:"dep3"},
-            {label:"Departement 4", name:"dep4"},
-            {label:"Departement 5", name:"dep5"}
-          ],
-          type:"select"
-        },
-        {
-          label:"Organisme",
-          values:[
-            {label:"Acme", name:"Acme"},
-            {label:"Footbook", name:"Footbook"},
-            {label:"Pear", name:"Pear"},
-            {label:"Amazing & Cie", name:"Amazing & Cie"},
-          ],
-          type:"select",
-          name:"organisme"
-        },
-        {
-          label:"Date",
-          type:"dateRangePicker",
-          name:"datepicker"
-        },
-      ]
-
       var locations = [
-        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"Gironde", date:"13/11/2019", dateFin:"29/01/2020", lieu: "Bordeaux", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Bordeaux"},
-        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"Loire-Atlantique", date:"05/11/2019", dateFin:"15/01/2019", lieu: "Nantes", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Nantes"},
-        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", date:"16/10/2019", dateFin:"20/11/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Paris"},
-        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", date:"03/11/2019", dateFin:"22/12/2019", lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Paris"},
-        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"Rhône", date:"19/11/2019", dateFin:"28/01/2020", lieu: "Lyon", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Lyon"},
-        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", date:"29/10/2019", dateFin:"10/12/2019", lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Toulouse"},
+        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"Gironde", dates:[{debut:"13/11/2019",fin:"15/11/2019"}, {debut:"29/01/2020",fin:"31/01/2020"}], lieu: "Bordeaux", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Bordeaux"},
+        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"Loire-Atlantique", dates:[{debut:"05/11/2019",fin:"07/11/2019"}, {debut:"15/01/2020",fin:"17/01/2020"}], lieu: "Nantes", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Nantes"},
+        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", dates:[{debut:"16/10/2019",fin:"18/10/2019"}, {debut:"20/11/2019",fin:"22/11/2019"}, {debut:"03/12/2019",fin:"05/12/2019"}, {debut:"22/01/2020",fin:"24/01/2020"}], lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Paris"},
+        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"Rhône", dates:[{debut:"19/11/2019",fin:"21/11/2019"}, {debut:"28/01/2020",fin:"30/01/2020"}], lieu: "Lyon", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Lyon"},
+        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019"}, {debut:"10/12/2019",fin:"12/12/2019"}], lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Toulouse"},
       ]
       var saveLocations = locations;
+      var saveSessions = (function () {
+        var buildASession = function (i, j) {
+          var oneSession = JSON.parse(JSON.stringify(locations[i]));
+          oneSession.dates = {
+            debut: locations[i].dates[j].debut,
+            fin: locations[i].dates[j].fin
+          };
+          return oneSession
+        };
+
+        var sessions = [];
+        for (let i = 0; i < locations.length; i++) {
+          for (let j = 0; j < locations[i].dates.length; j++) {
+            sessions.push(buildASession(i, j));
+          };
+        }
+        return sessions
+      })();
+
+      var getFieldValues = function (field) {
+        values = [];
+        for (let i = 0; i < locations.length; i++) {
+          var alreadyExist = false;
+          for (let j = 0; j < values.length; j++) {
+            if (values[j] === locations[i][field]) {
+              alreadyExist = true;
+            }
+          }
+          if (!alreadyExist) {
+            values.push(locations[i][field]);
+          }
+        }
+        var fields = function (values) {
+          fieldsList = [];
+          for (let i = 0; i < values.length; i++) {
+            fieldsList.push({label:values[i], name:values[i]})
+          }
+          return fieldsList
+        }
+        return fields(values);
+      };
+
+      var fields=[
+        {
+          label:'Région',
+          name:'region',
+          values:getFieldValues('region'),
+          type:'select'
+        },
+        {
+          label:'Département',
+          name:'departement',
+          values:getFieldValues('departement'),
+          type:'select'
+        },
+        {
+          label:'Organisme',
+          name:'organisme',
+          values:getFieldValues('organisme'),
+          type:'select'
+        },
+        {
+          label:'Date',
+          type:'dateRangePicker',
+          name:'datepicker'
+        },
+      ]
 
       // FUNCTIONS
       function buildSearchBar(fields){
@@ -263,6 +286,13 @@
           // popup contents for markers
           var contentString = function (marker) {
             if (marker) {
+              var getDatesList = function (dates) {
+                var list = '';
+                for (let i = 0; i < dates.length; i++) {
+                  list += '<li>Du ' + dates[i].debut + ' au ' + dates[i].fin + '</li>';
+                }
+                return list
+              };
               var openRegistration = '<h6 style="color:red>inscriptions fermées</h6>';
               if (marker.ouverte) {
                 openRegistration =
@@ -274,11 +304,12 @@
               '</div>'+
               '<h1 id="firstHeading">' + marker.organisme + ' - ' + marker.region + '</h1>'+
               '<div id="bodyContent">'+
-              '<ul><li> Du ' + marker.date + ' au ' + marker.dateFin + '</li></ul>'+
-              '<ul><li>' + marker.lieu + '</li></ul>'+
-              '<ul><li>' + marker.adresse + '</li></ul>'+
-              '<ul><li> tel : ' + marker.tel + '</li></ul>'+
-              openRegistration+
+              '<p>Dates de sessions : </p>'+
+              '<ul>' + getDatesList(marker.dates)+
+              '<p>' + marker.lieu + '</p>'+
+              '<p>' + marker.adresse + '</p>'+
+              '<p> tel : ' + marker.tel + '</p>'+
+              openRegistration+'</ul>'+
               '</div>'+
               '</div>';
 
@@ -320,25 +351,41 @@
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
         }
 
-      function filterData(){
+      var momentification = function (date) {
+        date=date.split('/');
+        date=date[2]+'-'+date[1]+'-'+date[0];
+        return date
+      }
+
+      function filterData(forMarkers){
+        var dataToFilter;
+        if (forMarkers) {
+          // data used for search results 
+          dataToFilter = saveLocations;
+        } else {
+          // data used for marker generation
+          dataToFilter = saveSessions;
+        }
         var selectedFilters=[];  
         fields.map(function(field){
           var fieldSearchValue = $('#'+field.name).val();
           selectedFilters.push({name:field.name, value:fieldSearchValue})
         })
         // console.log(selectedFilters)
-        var selectedLocations = saveLocations.filter(function(location){
+        var selectedLocations = dataToFilter.filter(function(location){
           var validLocation=true;
           selectedFilters.map(function(filter){
             //Avoid cases where field is datepicker type / search field value = search field name => means all results
             if(filter.name!=="datepicker" && filter.name!=filter.value && location[filter.name]!==filter.value){
               validLocation=false;
             }
-            else if(filter.name==="datepicker" && filter.value!==""){
-              var date1=moment(filter.value.split(' - ')[0]);
-              var date2=moment(filter.value.split(' - ')[1]);
-              var locationDate=moment(location['date']);
-              if(locationDate<date1 || locationDate>date2){
+            else if(filter.name==="datepicker" && filter.value!=="" && location.dates && location.dates.debut){
+              var date1=filter.value.split(' - ')[0];
+              date1 = momentification(date1);
+              var date2=filter.value.split(' - ')[1];
+              date2 = momentification(date2);
+              locationDate = momentification(location.dates.debut);
+              if(moment(locationDate).isBefore(date1) || moment(locationDate).isAfter(date2)){
                 validLocation=false;
               }
             }
@@ -349,39 +396,38 @@
       }
 
       function displayResults(selectedLocations){
-        // console.log(selectedLocations)
         if(selectedLocations.length>0){
           $('#results').html('');
-          $('#results').append("<div class='container'><p>"+selectedLocations.length+" formations trouvées</p>")
+          $('#results').append("<div class='container'><p>"+selectedLocations.length+" sessions de formations trouvées</p>")
           var index = 0;
           selectedLocations.map(function(selectedLocation){
-            index++;
-            id = 'subscribe' + index;
-            var openRegistration = '<h6 style="color:red"">inscriptions fermées</h6>';
-            if (selectedLocation.ouverte) {
-              openRegistration =
-              '<h6 style="color:green">inscriptions ouvertes</h6>'+
-              '<button id='+id+' class="secondColorBg mainColor textBold">S\'inscrire</button>';
-            }
-            var courseReview =
-            '<div class="card" >'+
-            '<h6>Session du '+selectedLocation.date+' au '+selectedLocation.dateFin+'</h6>'+
-            '<h6>'+selectedLocation.title+' </h6>'+
-            '<div id="trainingDetails">';
+              index++;
+              id = 'subscribe' + index;
+              var openRegistration = '<h6 style="color:red"">inscriptions fermées</h6>';
+              if (selectedLocation.ouverte) {
+                openRegistration =
+                '<h6 style="color:green">inscriptions ouvertes</h6>'+
+                '<button id='+id+' class="secondColorBg mainColor textBold">S\'inscrire</button>';
+              }
+              var courseReview =
+              '<div class="card" >'+
+              '<h6>Session du '+selectedLocation.dates.debut+' au '+selectedLocation.dates.fin+'</h6>'+
+              '<h6>'+selectedLocation.title+' </h6>'+
+              '<div id="trainingDetails">';
               Object.entries(selectedLocation).map(function(locationInfo){
-                if(locationInfo[0] !=="lat" && locationInfo[0]!=="lng" && locationInfo[0]!=="title" && locationInfo[0]!=="date" && locationInfo[0]!=="dateFin" && locationInfo[0]!=="lieu" && locationInfo[0]!=="ouverte" && locationInfo[0]!=="url"){
+                if(locationInfo[0] !=="dates" && locationInfo[0] !=="lat" && locationInfo[0]!=="lng" && locationInfo[0]!=="title" && locationInfo[0]!=="lieu" && locationInfo[0]!=="ouverte" && locationInfo[0]!=="url"){
                   courseReview+='<p>'+locationInfo[0]+': '+locationInfo[1]+'</p>';
                 }
               })
-            courseReview+=
-            '</div>'+
-            '<h6>'+selectedLocation.lieu+'</h6>'+
-            openRegistration+
-            '</div></div>';
-            $('#results').append(courseReview)
-            if (selectedLocation.ouverte) {
-              displayRegistration('#' + id, selectedLocation.title);
-            }
+              courseReview+=
+              '</div>'+
+              '<h6>'+selectedLocation.lieu+'</h6>'+
+              openRegistration+
+              '</div></div>';
+              $('#results').append(courseReview)
+              if (selectedLocation.ouverte) {
+                displayRegistration('#' + id, selectedLocation.title);
+              }
           })
         }
         else{
@@ -397,8 +443,11 @@
         $('#datepicker').val('');
       });
       $("#search").on('click', function(){
+        // First filtering, that generate one result (location) per session
         locations = filterData();
         displayResults(locations);
+        // There is is a second filtering exclusively for markers, because we do not want a marker for each session, only one marker for each training (wich contains X sessions)
+        locations = filterData('forMarkers');
         initMap();
       });
 
