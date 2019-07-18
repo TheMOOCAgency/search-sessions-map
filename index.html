@@ -34,12 +34,19 @@
       #searchWrapper{
         padding:20px;
       }
+      .searchButton{
+        display: inline-flex;
+        margin-left: -200px;
+      }
+      .row{
+        display: inline-flex;
+      }
       p{
         margin:0;
       }
       .inputWrapper{
         display: flex;
-        align-items: center;
+        /* align-items: center; */
         justify-content: center;
       }
       .titleSearch{
@@ -147,7 +154,7 @@
             <div class="input-group flex-nowrap"><input type="text" id="datepicker" class="form-control mb-3" placeholder="Date" aria-label="organisme"></div>
           </div>
         </div>
-        <div class="">
+        <div class="searchButton">
           <button id="search" class="secondColorBg mainColor textBold">Rechercher</button>
         </div>
       </div>
@@ -187,26 +194,67 @@
 
       // DATA
       var locations = [
-        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"Gironde", dates:[{debut:"13/11/2019",fin:"15/11/2019"}, {debut:"29/01/2020",fin:"31/01/2020"}], lieu: "Bordeaux", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Bordeaux"},
-        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"Loire-Atlantique", dates:[{debut:"05/11/2019",fin:"07/11/2019"}, {debut:"15/01/2020",fin:"17/01/2020"}], lieu: "Nantes", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Nantes"},
-        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", dates:[{debut:"16/10/2019",fin:"18/10/2019"}, {debut:"20/11/2019",fin:"22/11/2019"}, {debut:"03/12/2019",fin:"05/12/2019"}, {debut:"22/01/2020",fin:"24/01/2020"}], lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Paris"},
-        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"Rhône", dates:[{debut:"19/11/2019",fin:"21/11/2019"}, {debut:"28/01/2020",fin:"30/01/2020"}], lieu: "Lyon", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Lyon"},
-        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019"}, {debut:"10/12/2019",fin:"12/12/2019"}], lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", ouverte: true, url: "", title:"Formation de Toulouse"},
+        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"Gironde", dates:[{debut:"13/11/2019",fin:"15/11/2019", ouverte: true}, {debut:"29/01/2020",fin:"31/01/2020", ouverte: true}], lieu: "Bordeaux", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Bordeaux"},
+        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"Loire-Atlantique", dates:[{debut:"05/11/2019",fin:"07/11/2019", ouverte: true}, {debut:"15/01/2020",fin:"17/01/2020", ouverte: true}], lieu: "Nantes", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Nantes"},
+        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", dates:[{debut:"16/10/2019",fin:"18/10/2019", ouverte: true}, {debut:"20/11/2019",fin:"22/11/2019", ouverte: true}, {debut:"03/12/2019",fin:"05/12/2019", ouverte: true}, {debut:"22/01/2020",fin:"24/01/2020", ouverte: true}], lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Paris"},
+        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs bis", region:"Île-de-France", departement:"Paris", dates:[{debut:"16/12/2019",fin:"18/12/2019", ouverte: true},], lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation bis"},
+        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"Rhône", dates:[{debut:"19/11/2019",fin:"21/11/2019", ouverte: true}, {debut:"28/01/2020",fin:"30/01/2020", ouverte: true}], lieu: "Lyon", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Lyon"},
+        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019", ouverte: true}, {debut:"10/12/2019",fin:"12/12/2019", ouverte: true}], lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Toulouse"},
       ]
-      var saveLocations = locations;
+
+      var saveLocations = (function () {
+        var aggregateLocations = function (location, i) {
+          i ++;
+          for (var j = i; j < aggregatedLocationsList.length; j++) {
+            if (location.lat === aggregatedLocationsList[j].lat && location.lng === aggregatedLocationsList[j].lng) {
+              location.trainings.push(
+                {
+                  organisme: aggregatedLocationsList[j].organisme,
+                  dates: aggregatedLocationsList[j].dates,
+                  tel: aggregatedLocationsList[j].tel,
+                  title: aggregatedLocationsList[j].title,
+                }
+              );
+              aggregatedLocationsList.splice(j, 1);
+              j--;
+            }
+          }
+          delete location.organisme;
+          delete location.dates;
+          delete location.tel;
+          delete location.title;
+        };
+
+        var aggregatedLocationsList = JSON.parse(JSON.stringify(locations));
+        for (var i = 0; i < aggregatedLocationsList.length; i++) {
+          aggregatedLocationsList[i].trainings = [];
+          aggregatedLocationsList[i].trainings.push(
+            {
+              organisme: aggregatedLocationsList[i].organisme,
+              dates: aggregatedLocationsList[i].dates,
+              tel: aggregatedLocationsList[i].tel,
+              title: aggregatedLocationsList[i].title,
+            }
+          );
+          aggregateLocations(aggregatedLocationsList[i], i);
+        }
+        return aggregatedLocationsList
+      })();
+
       var saveSessions = (function () {
         var buildASession = function (i, j) {
           var oneSession = JSON.parse(JSON.stringify(locations[i]));
           oneSession.dates = {
             debut: locations[i].dates[j].debut,
-            fin: locations[i].dates[j].fin
+            fin: locations[i].dates[j].fin,
+            ouverte: locations[i].dates[j].ouverte
           };
           return oneSession
         };
 
         var sessions = [];
-        for (let i = 0; i < locations.length; i++) {
-          for (let j = 0; j < locations[i].dates.length; j++) {
+        for (var i = 0; i < locations.length; i++) {
+          for (var j = 0; j < locations[i].dates.length; j++) {
             sessions.push(buildASession(i, j));
           };
         }
@@ -215,9 +263,9 @@
 
       var getFieldValues = function (field) {
         values = [];
-        for (let i = 0; i < locations.length; i++) {
+        for (var i = 0; i < locations.length; i++) {
           var alreadyExist = false;
-          for (let j = 0; j < values.length; j++) {
+          for (var j = 0; j < values.length; j++) {
             if (values[j] === locations[i][field]) {
               alreadyExist = true;
             }
@@ -228,7 +276,7 @@
         }
         var fields = function (values) {
           fieldsList = [];
-          for (let i = 0; i < values.length; i++) {
+          for (var i = 0; i < values.length; i++) {
             fieldsList.push({label:values[i], name:values[i]})
           }
           return fieldsList
@@ -292,7 +340,7 @@
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-        var markers = locations.map(function(location, i) {
+        var markers = saveLocations.map(function(location, i) {
           return new google.maps.Marker({
             position: location,
             map: map,
@@ -312,39 +360,60 @@
 
         // create popup on markers
         (function (){
+          var markerSaved;
           // popup contents for markers
           var contentString = function (marker) {
             if (marker) {
+
+              markerSaved = marker;
+
+              // We create a liste with every sessions possible for the training
               var getDatesList = function (dates) {
                 var list = '<ul id="markerTrainingDates">';
-                for (let i = 0; i < dates.length; i++) {
-                  list += '<li>Du ' + dates[i].debut + ' au ' + dates[i].fin + '</li>';
+                for (var i = 0; i < dates.length; i++) {
+                  list += '<li>Du ' + dates[i].debut + ' au ' + dates[i].fin;
+                  if (dates[i].ouverte) {
+                    list += '<span style="color:green"> inscriptions ouvertes</span>';
+                  } else {
+                    list += '<span style="color:red> inscriptions fermées</span>';
+                  }
+                  list +=  '</li>';
                 }
                 list += '</ul>'
                 return list
               };
-              var openRegistration = '<h6 style="color:red>inscriptions fermées</h6>';
-              if (marker.ouverte) {
-                openRegistration =
-                '<div id="markerRegistration">'+
-                '<h6 style="color:green">inscriptions ouvertes</h6>'+
-                '<button id="subscribeMarker" class="secondColorBg mainColor textBold">S\'inscrire</button>'+
-                '</div>'
+
+              // We check if there is at least one session open, if true we show registration button
+              var openRegistration = function(dates, j) {
+                for (var i = 0; i < dates.length; i++) {
+                  if (dates[i].ouverte) {
+                    return '<div id="markerRegistration">'+
+                    '<button id="subscribeMarker'+j+'" class="secondColorBg mainColor textBold">S\'inscrire</button>'+
+                    '</div>';
+                  }
+                }
+                return ''
               }
-              var content = '<div id="content">'+
-              '</div>'+
-              '<h1 id="markerFirstHeading">' + marker.organisme + ' - ' + marker.region + '</h1>'+
-              '<div id="markerBodyContent">'+
-              '<div id="markerRegisterInfos">'+
-              getDatesList(marker.dates)+
-              openRegistration+
-              '</div>'+
+
+              var content = '<div id="content">';
+              for (let j = 0; j < marker.trainings.length; j++) {
+                training = marker.trainings[j];
+                content +=
+                '</div>'+
+                '<h1 id="markerFirstHeading">' + training.organisme + ' - ' + marker.region + '</h1>'+
+                '<div id="markerBodyContent">'+
+                '<div id="markerRegisterInfos">'+
+                getDatesList(training.dates)+
+                openRegistration(training.dates, j)+
+                '</div>'+
+                '</div>';
+              }
+              content +=
               '<div id="markerLocationInfos">'+
               '<p id="markerTown">' + marker.lieu + '</p>'+
               '<div id="markerDetails">' +
               '<p>' + marker.adresse + '</p>'+
-              '<p> tel : ' + marker.tel + '</p>'+
-              '</div>'+
+              '<p> tel : ' + training.tel + '</p>'+
               '</div>'+
               '</div>';
 
@@ -369,12 +438,13 @@
               if (clickedMarker) {
                 clickedMarker.close();
               }
-              clickedMarker = infowindow(locations[i]);
+              clickedMarker = infowindow(saveLocations[i]);
               clickedMarker.open(map, markers[i]);
 
               google.maps.event.addListener(clickedMarker,'domready',function() {
-                if (locations[i].ouverte) {
-                  displayRegistration('#subscribeMarker', locations[i]);
+                console.log(markerSaved);
+                for (let j = 0; j < markerSaved.trainings.length; j++) {
+                  displayRegistration('#subscribeMarker'+j, markerSaved);
                 }
               });
             });
@@ -439,7 +509,7 @@
               index++;
               id = 'subscribe' + index;
               var openRegistration = '<h6 style="color:red"">inscriptions fermées</h6>';
-              if (selectedLocation.ouverte) {
+              if (selectedLocation.dates.ouverte) {
                 openRegistration =
                 '<h6 style="color:green">inscriptions ouvertes</h6>'+
                 '<button id='+id+' class="secondColorBg mainColor textBold">S\'inscrire</button>';
@@ -460,7 +530,7 @@
               openRegistration+
               '</div></div>';
               $('#results').append(courseReview)
-              if (selectedLocation.ouverte) {
+              if (selectedLocation.dates.ouverte) {
                 displayRegistration('#' + id, selectedLocation);
               }
           })
@@ -488,7 +558,14 @@
 
       var displayRegistration = function (id, registration) {
         $(id).on('click', function(){
-          console.log('Afficher formulaire d\'inscription de : ' + registration.title);
+          if (registration.title) {
+            console.log('Afficher formulaire d\'inscription de : ' + registration.title);
+          } else if (registration.trainings) {
+            console.log('Afficher formulaire d\'inscription de : ');
+            for (let i = 0; i < registration.trainings.length; i++) {
+              console.log(registration.trainings[i].title + ' ');
+            }
+          }
           // l'objet registration contient toutes les infos dont on a besoin pour pré-remplir les champs du formulaire d'inscription.
           // Ici faire l'appel du formulaire du microsite
         });
