@@ -103,6 +103,35 @@
         width: 400px;
         margin: 20px;
       }
+      #markerFirstHeading{
+        font-size: 28px;
+        font-weight: 900;
+        margin-bottom: 0px;
+        color: #145b90;
+      }
+      #markerBodyContent{
+        color: #0a4e56;
+        text-align: center;
+      }
+      #markerTrainingDates{
+        display: inline-block;
+      }
+      #markerRegistration{
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+        text-align: center;
+      }
+      #markerTown{
+        text-align: center;
+        font-size: 16px;
+        font-weight: 900;
+        margin-bottom: 0px;
+      }
+      #markerDetails{
+        text-align: center;
+        margin-top: 0px;
+      }
     </style>
   </head>
   <body>
@@ -287,29 +316,35 @@
           var contentString = function (marker) {
             if (marker) {
               var getDatesList = function (dates) {
-                var list = '';
+                var list = '<ul id="markerTrainingDates">';
                 for (let i = 0; i < dates.length; i++) {
                   list += '<li>Du ' + dates[i].debut + ' au ' + dates[i].fin + '</li>';
                 }
+                list += '</ul>'
                 return list
               };
               var openRegistration = '<h6 style="color:red>inscriptions fermées</h6>';
               if (marker.ouverte) {
                 openRegistration =
+                '<div id="markerRegistration">'+
                 '<h6 style="color:green">inscriptions ouvertes</h6>'+
-                '<button id="subscribeMarker" class="secondColorBg mainColor textBold">S\'inscrire</button>'
+                '<button id="subscribeMarker" class="secondColorBg mainColor textBold">S\'inscrire</button>'+
+                '</div>'
               }
               var content = '<div id="content">'+
-              '<div id="siteNotice">'+
               '</div>'+
-              '<h1 id="firstHeading">' + marker.organisme + ' - ' + marker.region + '</h1>'+
-              '<div id="bodyContent">'+
-              '<p>Dates de sessions : </p>'+
-              '<ul>' + getDatesList(marker.dates)+
-              '<p>' + marker.lieu + '</p>'+
+              '<h1 id="markerFirstHeading">' + marker.organisme + ' - ' + marker.region + '</h1>'+
+              '<div id="markerBodyContent">'+
+              '<div id="markerRegisterInfos">'+
+              getDatesList(marker.dates)+
+              openRegistration+
+              '</div>'+
+              '<div id="markerLocationInfos">'+
+              '<p id="markerTown">' + marker.lieu + '</p>'+
+              '<div id="markerDetails">' +
               '<p>' + marker.adresse + '</p>'+
               '<p> tel : ' + marker.tel + '</p>'+
-              openRegistration+'</ul>'+
+              '</div>'+
               '</div>'+
               '</div>';
 
@@ -339,7 +374,7 @@
 
               google.maps.event.addListener(clickedMarker,'domready',function() {
                 if (locations[i].ouverte) {
-                  displayRegistration('#subscribeMarker', locations[i].title);
+                  displayRegistration('#subscribeMarker', locations[i]);
                 }
               });
             });
@@ -426,7 +461,7 @@
               '</div></div>';
               $('#results').append(courseReview)
               if (selectedLocation.ouverte) {
-                displayRegistration('#' + id, selectedLocation.title);
+                displayRegistration('#' + id, selectedLocation);
               }
           })
         }
@@ -451,9 +486,11 @@
         initMap();
       });
 
-      var displayRegistration = function (id, training) {
+      var displayRegistration = function (id, registration) {
         $(id).on('click', function(){
-          console.log('Afficher formulaire d\'inscription de : ' + training);   
+          console.log('Afficher formulaire d\'inscription de : ' + registration.title);
+          // l'objet registration contient toutes les infos dont on a besoin pour pré-remplir les champs du formulaire d'inscription.
+          // Ici faire l'appel du formulaire du microsite
         });
       }
 
