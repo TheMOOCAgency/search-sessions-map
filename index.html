@@ -202,7 +202,7 @@
         {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019", ouverte: true}, {debut:"10/12/2019",fin:"12/12/2019", ouverte: true}], lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Toulouse"},
       ]
 
-      var saveLocations = (function () {
+      var markerLocations = (function () {
         var aggregateLocations = function (location, i) {
           i ++;
           for (var j = i; j < aggregatedLocationsList.length; j++) {
@@ -241,7 +241,9 @@
         return aggregatedLocationsList
       })();
 
-      var saveSessions = (function () {
+      var saveMarkerLocations = JSON.parse(JSON.stringify(markerLocations));
+
+      var sessionsLocations = (function () {
         var buildASession = function (i, j) {
           var oneSession = JSON.parse(JSON.stringify(locations[i]));
           oneSession.dates = {
@@ -340,7 +342,7 @@
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-        var markers = saveLocations.map(function(location, i) {
+        var markers = markerLocations.map(function(location, i) {
           return new google.maps.Marker({
             position: location,
             map: map,
@@ -438,11 +440,10 @@
               if (clickedMarker) {
                 clickedMarker.close();
               }
-              clickedMarker = infowindow(saveLocations[i]);
+              clickedMarker = infowindow(markerLocations[i]);
               clickedMarker.open(map, markers[i]);
 
               google.maps.event.addListener(clickedMarker,'domready',function() {
-                console.log(markerSaved);
                 for (let j = 0; j < markerSaved.trainings.length; j++) {
                   displayRegistration('#subscribeMarker'+j, markerSaved);
                 }
@@ -462,15 +463,10 @@
         return date
       }
 
-      function filterData(forMarkers){
-        var dataToFilter;
-        if (forMarkers) {
-          // data used for search results 
-          dataToFilter = saveLocations;
-        } else {
-          // data used for marker generation
-          dataToFilter = saveSessions;
-        }
+      // Filtering the list of sessions for a search
+      function filterData(){
+        var dataToFilter = sessionsLocations;
+
         var selectedFilters=[];  
         fields.map(function(field){
           var fieldSearchValue = $('#'+field.name).val();
@@ -491,6 +487,66 @@
               date2 = momentification(date2);
               locationDate = momentification(location.dates.debut);
               if(moment(locationDate).isBefore(date1) || moment(locationDate).isAfter(date2)){
+                validLocation=false;
+              }
+            }
+          })
+          return validLocation;
+        })
+        return selectedLocations;
+      }
+
+      // Filtering the list of marker for a search
+      function filterMarkers(){
+        var dataToFilter = saveMarkerLocations;
+
+        var selectedFilters=[];  
+        fields.map(function(field){
+          var fieldSearchValue = $('#'+field.name).val();
+          selectedFilters.push({name:field.name, value:fieldSearchValue})
+        })
+        // console.log(selectedFilters)
+        var selectedLocations = dataToFilter.filter(function(location){
+          var validLocation=true;
+          selectedFilters.map(function(filter){
+
+            if (filter.name!=="datepicker" && filter.name!=="organisme") {
+              if(filter.name!=filter.value && location[filter.name]!==filter.value){
+                validLocation=false;
+              }
+            }
+
+            // Check in every training if there is an organisme that is OK with the search, if not, return false
+            if(filter.name === "organisme" && filter.name!=filter.value) {
+              var testOrganisme = false;
+              for (var i = 0; i < location.trainings.length; i++) {
+                if (location.trainings[i].organisme === filter.value) {
+                  testOrganisme = true;
+                }
+              }
+              if (!testOrganisme) {
+                validLocation=false;
+              }
+            }
+            
+            if(filter.name==="datepicker" && filter.value!==""){
+              var testDates = false;
+              var date1=filter.value.split(' - ')[0];
+              date1 = momentification(date1);
+              var date2=filter.value.split(' - ')[1];
+              date2 = momentification(date2);
+              var locationDate;
+
+              // Check in every dates (j) in every training (i) if there at least one date wich is OK with the search, if not, return false
+              for (var i = 0; i < location.trainings.length; i++) {
+                for (let j = 0; j < location.trainings[i].dates.length; j++) {
+                  locationDate = momentification(location.trainings[i].dates[j].debut);
+                  if(moment(locationDate).isAfter(date1) && moment(locationDate).isBefore(date2)){
+                    testDates=true;
+                  }
+                }
+              }
+              if(!testDates){
                 validLocation=false;
               }
             }
@@ -543,7 +599,6 @@
 
       // ACTIONS
       $(document).ready(function(){
-        var saveLocations=locations;
         buildSearchBar(fields);
         $('#datepicker').val('');
       });
@@ -552,21 +607,25 @@
         locations = filterData();
         displayResults(locations);
         // There is is a second filtering exclusively for markers, because we do not want a marker for each session, only one marker for each training (wich contains X sessions)
-        locations = filterData('forMarkers');
+        markerLocations = filterMarkers();
         initMap();
       });
 
       var displayRegistration = function (id, registration) {
         $(id).on('click', function(){
-          if (registration.title) {
-            console.log('Afficher formulaire d\'inscription de : ' + registration.title);
-          } else if (registration.trainings) {
-            console.log('Afficher formulaire d\'inscription de : ');
-            for (let i = 0; i < registration.trainings.length; i++) {
-              console.log(registration.trainings[i].title + ' ');
-            }
+          var dataToSend = JSON.parse(JSON.stringify(registration));
+
+          // If a marker with multiple trainings was clicked we keep the training linked to the id, remove all others and make dataToSend having same format has a non multiple selection
+          if (dataToSend.trainings) {
+            trainingId = /\d+/i.exec(id)[0];
+            dataToSend.dates = dataToSend.trainings[trainingId].dates;
+            dataToSend.organisme = dataToSend.trainings[trainingId].organisme;
+            dataToSend.tel = dataToSend.trainings[trainingId].tel;
+            dataToSend.title = dataToSend.trainings[trainingId].title;
+            delete dataToSend.trainings
           }
-          // l'objet registration contient toutes les infos dont on a besoin pour pré-remplir les champs du formulaire d'inscription.
+          console.log('Afficher formulaire d\'inscription de : ' + dataToSend.title);
+          // l'objet dataToSend contient toutes les infos dont on a besoin pour pré-remplir les champs du formulaire d'inscription.
           // Ici faire l'appel du formulaire du microsite
         });
       }
