@@ -17,6 +17,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/fr.js"></script>
 
     <style>
+      #banner{
+        background-color:#4882FF;
+      }
       #map {
         height: 50vh;
         width: 60%;
@@ -29,10 +32,14 @@
       html, body {
         height: 100%;
         margin: 0;
-        padding: 20px;
+        padding: 0px;
       }
       #searchWrapper{
-        padding:20px;
+        padding:0px;
+      }
+      #datepicker{
+        color: #EDF6EB;
+        border: 1px solid #3562C5;
       }
       .searchButton{
         display: inline-flex;
@@ -48,6 +55,8 @@
         display: flex;
         /* align-items: center; */
         justify-content: center;
+        padding-left: 5px;
+        padding-right: 5px;
       }
       .titleSearch{
         padding: 20px 0px;
@@ -59,18 +68,22 @@
       }
       .custom-select{
         margin: 0!important;
+        border: 1px solid #3562C5;
       }
       .mainColor{
-        color:#1a1c85
+        color:#4983FF
       }
       .secondColor{
         color:#f7c30d;
       }
       .secondColorBg{
-        background-color:#f7c30d;
+        background-color:#2ED801;
       }
       .filterIntro{
         font-weight: bold;
+        display: inline-flex;
+        color: #EDF6EB;
+        margin-right: 20px;
       }
       .textBold{
         font-weight: bold;
@@ -81,9 +94,12 @@
         border-radius: 5px;
       }
       select, input{
-        background-color: lightgray!important;
-        color: gray!important;
+        background-color: #3562C5!important;
+        color: #EDF6EB!important;
         font-weight: 500!important;
+      }
+      #search, #register{
+        color: #EDF6EB;
       }
       #searchCourses{
         padding: 20px 0px;
@@ -142,20 +158,20 @@
     </style>
   </head>
   <body>
-    <div id="searchWrapper" class="container">
-      <p class="titleSearch mainColor">Toutes les prochaines sessions en région</p>
-      <div class="">
-          <p class="filterIntro mainColor">Filtrer par</p>
-        </div>
-      <div id="searchCourses">
-        <div class="row">
+    <p class="titleSearch mainColor">Toutes les prochaines sessions en région</p>
+    <div id="banner">
+      <div id="searchWrapper" class="container">
+        <div id="searchCourses">
+            <p class="filterIntro mainColor">Filtrer par</p>
+          <div class="row">
 
-          <div class="col-md-3 inputWrapper hide" id="datePickerWrap">
-            <div class="input-group flex-nowrap"><input type="text" id="datepicker" class="form-control mb-3" placeholder="Date" aria-label="organisme"></div>
+            <div class="col-md-3 inputWrapper hide" id="datePickerWrap">
+              <div class="input-group flex-nowrap"><input type="text" id="datepicker" class="form-control mb-3" placeholder="Date" aria-label="organisme"></div>
+            </div>
           </div>
-        </div>
-        <div class="searchButton">
-          <button id="search" class="secondColorBg mainColor textBold">Rechercher</button>
+          <div class="searchButton">
+            <button id="search" class="secondColorBg mainColor textBold">Rechercher</button>
+          </div>
         </div>
       </div>
     </div>
@@ -197,10 +213,19 @@
         {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"Gironde", dates:[{debut:"13/11/2019",fin:"15/11/2019", ouverte: true}, {debut:"29/01/2020",fin:"31/01/2020", ouverte: true}], lieu: "Bordeaux", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Bordeaux"},
         {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"Loire-Atlantique", dates:[{debut:"05/11/2019",fin:"07/11/2019", ouverte: true}, {debut:"15/01/2020",fin:"17/01/2020", ouverte: true}], lieu: "Nantes", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Nantes"},
         {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", dates:[{debut:"16/10/2019",fin:"18/10/2019", ouverte: true}, {debut:"20/11/2019",fin:"22/11/2019", ouverte: true}, {debut:"03/12/2019",fin:"05/12/2019", ouverte: true}, {debut:"22/01/2020",fin:"24/01/2020", ouverte: true}], lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Paris"},
-        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs bis", region:"Île-de-France", departement:"Paris", dates:[{debut:"16/12/2019",fin:"18/12/2019", ouverte: true},], lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation bis"},
         {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"Rhône", dates:[{debut:"19/11/2019",fin:"21/11/2019", ouverte: true}, {debut:"28/01/2020",fin:"30/01/2020", ouverte: true}], lieu: "Lyon", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Lyon"},
         {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019", ouverte: true}, {debut:"10/12/2019",fin:"12/12/2019", ouverte: true}], lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Toulouse"},
       ]
+
+      // var requestURL = './json/locations.json';
+      // var request = new XMLHttpRequest();
+      // request.open('GET', requestURL);
+      // request.responseType = 'json';
+      // request.send();
+      // request.onload = function() {
+      //   var locationsTEST = request.response;
+      //   console.log(locationsTEST);
+      // }
 
       var markerLocations = (function () {
         var aggregateLocations = function (location, i) {
@@ -568,7 +593,7 @@
               if (selectedLocation.dates.ouverte) {
                 openRegistration =
                 '<h6 style="color:green">inscriptions ouvertes</h6>'+
-                '<button id='+id+' class="secondColorBg mainColor textBold">S\'inscrire</button>';
+                '<button id='+id+ ' class="secondColorBg mainColor textBold">S\'inscrire</button>';
               }
               var courseReview =
               '<div class="card" >'+
