@@ -45,6 +45,15 @@
         display: inline-flex;
         margin-left: -200px;
       }
+      .searchButton > p{
+        font-size: 12px;
+        color: #EDF6EB;
+        position: relative;
+        left: -120px;
+        top: 45px;
+        text-decoration: underline;
+        display: none;
+      }
       .row{
         display: inline-flex;
       }
@@ -106,6 +115,10 @@
       }
       #resultsWrapper{
         padding: 20px;
+      }
+      #reinitializer:hover{
+        color: #3562C5;
+        cursor: pointer;
       }
       .card{
         background-color: #DDEEFF;
@@ -207,6 +220,7 @@
           </div>
           <div class="searchButton">
             <button id="search" class="secondColorBg mainColor textBold">Rechercher</button>
+            <p id="reinitializer">Réinitialiser les filtres</p>
           </div>
         </div>
       </div>
@@ -373,7 +387,7 @@
       // FUNCTIONS
       function buildSearchBar(fields){
         fields.map(function(field){
-          if(field.type==="select"){
+          if(field.type === 'select'){
             var fieldInput='<div class="col-md-2 inputWrapper"> <select class="custom-select mb-3" id="'+field.name+'"><option value="'+field.name+'">'+field.label+'</option>';
             field.values.map((value)=>{
               fieldInput+='<option value="'+value.name+'">'+value.label+'</option>'
@@ -381,9 +395,29 @@
             fieldInput+='</select>';
             $('#searchCourses .row').append(fieldInput);
           }
-          else if(field.type==="dateRangePicker"){
+          else if(field.type==='dateRangePicker'){
           $('#datePickerWrap').removeClass('hide'); 
           }
+        })
+        var updateReinitializer = function () {
+          if ($('#region')[0].value !== 'region' || $('#departement')[0].value !== 'departement' || $('#organisme')[0].value !== 'organisme' || $('#datepicker')[0].value !== ''){
+            $('#reinitializer')[0].style.display = 'initial';
+          } else {
+            $('#reinitializer')[0].style.display = 'none';
+          }
+        }
+        $('select').change(function () {
+          updateReinitializer();
+        })
+        $('#datepicker').change(function () {
+          updateReinitializer();
+        })
+        $('#reinitializer').click(function () {
+          $('#region')[0].value = 'region';
+          $('#departement')[0].value = 'departement';
+          $('#organisme')[0].value = 'organisme';
+          $('#datepicker')[0].value = '';
+          $('#reinitializer')[0].style.display = 'none';
         })
       }
       
@@ -407,7 +441,7 @@
             label: {
               text: labels[i % labels.length],
               color: 'black',
-              fontSize: "10px"
+              fontSize: '10px'
             },
             icon: {
               url: './icons/trainingIcon.svg', // url
