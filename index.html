@@ -113,18 +113,54 @@
         padding:20px;
         flex-direction: row !important;
       }
-      .card > h6{
-        display: inline-block;
-        width: 200px;
+      .card > *{
         margin: 20px;
+        width: 20%;
       }
-      .card > button {
+      .card > img{
+        width: 50px;
+      }
+      .card > h6, .card > #titleAndRegion{
+        display: inline-block;
+        /* width: 200px; */
+      }
+      .card > #subInfos > button{
         height: 50px;
+        color:  #EDF6EB;
+        border-radius: 0px;
       }
-      #trainingDetails{
+      #titleAndRegion {
+        color: #145b90;
+      }
+      #titleAndRegion > p {
+        font-style: italic;
+      }
+      /* #trainingDetails{
         display: inline-block;
         width: 400px;
-        margin: 20px;
+      } */
+      #subInfos{
+        width: 30%;
+      }
+      #subInfos > *{
+        display: inline-block;
+        margin-right: 20px;
+      }
+      #markerAndTown{
+        width: 10%;
+      }
+      #markerAndTown > *{
+        display: inline-block;
+        margin-right: 20px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #5E747D;
+      }
+      #resultsWrapper > div{
+        color: #145b90;
+      }
+      #resultsWrapper > div > h4{
+        display: inline-block;
       }
       #markerFirstHeading{
         font-size: 28px;
@@ -180,10 +216,7 @@
     </div>
     <div id="resultsWrapper" class="hide">
       <div>
-        <h4 class="mainColor textBold">Vos résultats</h4>
-      </div>
-      <div id="results">
-
+        <h4 class="mainColor textBold">Résultats de recherche</h4><span id ="results"></span>
       </div>
     </div>
 
@@ -373,14 +406,15 @@
             map: map,
             label: {
               text: labels[i % labels.length],
-              color: 'white'
+              color: 'black',
+              fontSize: "10px"
             },
             icon: {
-              url: './icons/trainingIcon.png', // url
-              scaledSize: new google.maps.Size(50, 50), // scaled size
+              url: './icons/trainingIcon.svg', // url
+              scaledSize: new google.maps.Size(30, 30), // scaled size
               origin: new google.maps.Point(0, 0), // origin
-              anchor: new google.maps.Point(25, 50), // anchor
-              labelOrigin: new google.maps.Point(25, 18), // label offset
+              anchor: new google.maps.Point(15, 30), // anchor
+              labelOrigin: new google.maps.Point(15, 13), // label offset
             },
           });
         });
@@ -583,31 +617,46 @@
 
       function displayResults(selectedLocations){
         if(selectedLocations.length>0){
-          $('#results').html('');
-          $('#results').append("<div class='container'><p>"+selectedLocations.length+" sessions de formations trouvées</p>")
+          // $('#results').html('');
+          // $('#results').append("<div class='container'><p>"+selectedLocations.length+" sessions de formations trouvées</p>")
+          $('#results').html('(' + selectedLocations.length + ')');
           var index = 0;
           selectedLocations.map(function(selectedLocation){
               index++;
               id = 'subscribe' + index;
-              var openRegistration = '<h6 style="color:red"">inscriptions fermées</h6>';
+              var openRegistration =
+                '<div id="subInfos">'+
+                '<img src="./icons/error.svg" alt="croix blanche sur rond rouge" height="25px" width="25px"/>'+
+                '<h6 style="color:red"">inscriptions fermées</h6>';
+                '</div>';
               if (selectedLocation.dates.ouverte) {
                 openRegistration =
+                '<div id="subInfos">'+
+                '<img src="./icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>'+
                 '<h6 style="color:green">inscriptions ouvertes</h6>'+
-                '<button id='+id+ ' class="secondColorBg mainColor textBold">S\'inscrire</button>';
+                '<button id='+id+ ' class="secondColorBg mainColor textBold">S\'inscrire</button>'+
+                '</div>';
               }
               var courseReview =
               '<div class="card" >'+
+              '<img src="./icons/presentation.svg" alt="icône de personnage faisant une présentation sur un tableau" height="50px" width="50px"/>'+
               '<h6>Session du '+selectedLocation.dates.debut+' au '+selectedLocation.dates.fin+'</h6>'+
-              '<h6>'+selectedLocation.title+' </h6>'+
-              '<div id="trainingDetails">';
-              Object.entries(selectedLocation).map(function(locationInfo){
-                if(locationInfo[0] !=="dates" && locationInfo[0] !=="lat" && locationInfo[0]!=="lng" && locationInfo[0]!=="title" && locationInfo[0]!=="lieu" && locationInfo[0]!=="ouverte" && locationInfo[0]!=="url"){
-                  courseReview+='<p>'+locationInfo[0]+': '+locationInfo[1]+'</p>';
-                }
-              })
-              courseReview+=
+              '<div id="titleAndRegion" >'+
+              '<h6>'+selectedLocation.organisme+' </h6>'+
+              '<p>'+selectedLocation.region+'</p>'+
               '</div>'+
+              // '<div id="trainingDetails">';
+              // Object.entries(selectedLocation).map(function(locationInfo){
+              //   if(locationInfo[0] !=="dates" && locationInfo[0] !=="lat" && locationInfo[0]!=="lng" && locationInfo[0]!=="title" && locationInfo[0]!=="region" && locationInfo[0]!=="lieu" && locationInfo[0]!=="ouverte" && locationInfo[0]!=="url"){
+              //     courseReview+='<p>'+locationInfo[1]+'</p>';
+              //   }
+              // })
+              // courseReview+=
+              // '</div>'+
+              '<div id="markerAndTown" >'+
+              '<img src="./icons/trainingIcon.svg" alt="icône bleu de localisation" height="25px" width="25px"/>'+
               '<h6>'+selectedLocation.lieu+'</h6>'+
+              '</div>'+
               openRegistration+
               '</div></div>';
               $('#results').append(courseReview)
