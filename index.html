@@ -22,7 +22,7 @@
       }
       #map {
         height: 50vh;
-        width: 60%;
+        width: 100%;
       }
       #mapWrapper{
         display: flex;
@@ -54,8 +54,13 @@
         text-decoration: underline;
         display: none;
       }
+      .searchButton > button:hover{
+        color:#2ED801!important;
+        background-color: #EDF6EB;
+      }
       .row{
         display: inline-flex;
+        width: 90%;
       }
       p{
         margin:0;
@@ -68,7 +73,10 @@
         padding-right: 5px;
       }
       .titleSearch{
-        padding: 20px 0px;
+        width: 400px;
+        margin-left: 200px;
+        margin-top: 50px;
+        margin-bottom: 50px;
         font-weight: 900;
         font-size:2rem;
       }
@@ -101,6 +109,7 @@
         border: 0;
         padding: 10px 20px;
         border-radius: 5px;
+        transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
       }
       select, input{
         background-color: #3562C5!important;
@@ -127,11 +136,14 @@
         flex-direction: row !important;
       }
       .card > *{
-        margin: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
         width: 20%;
       }
       .card > img{
-        width: 50px;
+        width: 6%;
       }
       .card > h6, .card > #titleAndRegion{
         display: inline-block;
@@ -141,6 +153,10 @@
         height: 50px;
         color:  #EDF6EB;
         border-radius: 0px;
+      }
+      .card > #subInfos > button:hover{
+        color:#2ED801!important;
+        background-color: #EDF6EB;
       }
       #titleAndRegion {
         color: #145b90;
@@ -152,22 +168,40 @@
         display: inline-block;
         width: 400px;
       } */
+      .monthBar{
+        background-color: #4882FF;
+        color: #EDF6EB;
+        height: 50px;
+        padding-left: 75px;
+        padding-top: 16px;
+      }
+      .monthBar > h4{
+        font-size: 16px;
+      }
       #subInfos{
-        width: 30%;
+        width: 40%;
       }
       #subInfos > *{
         display: inline-block;
+      }
+      #subInfos > img{
+        margin-right: 20px;
+      }
+      #subInfos > h6{
         margin-right: 20px;
       }
       #markerAndTown{
-        width: 10%;
+        width: 14%;
       }
       #markerAndTown > *{
         display: inline-block;
-        margin-right: 20px;
         font-size: 16px;
         font-weight: 400;
         color: #5E747D;
+      }
+      #resultsWrapper{
+        width: 80%;
+        margin: 0 auto;
       }
       #resultsWrapper > div{
         color: #145b90;
@@ -175,11 +209,31 @@
       #resultsWrapper > div > h4{
         display: inline-block;
       }
+      #markerLocationInfos{
+        text-align: center;
+      }
+      #markerLocationInfos > img{
+        position: relative;
+        top: -5px;
+      }
+      #markerRegistration > button{
+        color: #EDF6EB;
+        background-color: #3562C5;
+        border-radius: 0px;
+      }
+      #markerRegistration > button:hover{
+        color: #3562C5;
+        background-color: #EDF6EB;
+      }
       #markerFirstHeading{
-        font-size: 28px;
+        font-size: 14px;
         font-weight: 900;
-        margin-bottom: 0px;
+        margin-bottom: 10px;
+        text-align: center;
         color: #145b90;
+      }
+      #markerFirstHeading > span{
+        font-weight: 400;
       }
       #markerBodyContent{
         color: #0a4e56;
@@ -187,6 +241,12 @@
       }
       #markerTrainingDates{
         display: inline-block;
+        list-style-type: none;
+      }
+      #markerTrainingDates > li{
+        background-color: #EDF6EB;
+        font-weight: 500;
+        margin-bottom: 6px;
       }
       #markerRegistration{
         display: inline-block;
@@ -195,10 +255,12 @@
         text-align: center;
       }
       #markerTown{
+        display: inline-block;
         text-align: center;
         font-size: 16px;
         font-weight: 900;
         margin-bottom: 0px;
+        color: #145b90;
       }
       #markerDetails{
         text-align: center;
@@ -233,7 +295,6 @@
         <h4 class="mainColor textBold">Résultats de recherche</h4><span id ="results"></span>
       </div>
     </div>
-
 
     <!-- BOOTSTRAP-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -466,7 +527,7 @@
               var getDatesList = function (dates) {
                 var list = '<ul id="markerTrainingDates">';
                 for (var i = 0; i < dates.length; i++) {
-                  list += '<li>Du ' + dates[i].debut + ' au ' + dates[i].fin;
+                  list += '<li>Session du ' + dates[i].debut + ' au ' + dates[i].fin;
                   if (dates[i].ouverte) {
                     list += '<span style="color:green"> inscriptions ouvertes</span>';
                   } else {
@@ -495,7 +556,7 @@
                 training = marker.trainings[j];
                 content +=
                 '</div>'+
-                '<h1 id="markerFirstHeading">' + training.organisme + ' - ' + marker.region + '</h1>'+
+                '<h1 id="markerFirstHeading">' + training.organisme + ' <span>(' + marker.region + ')</span></h1>'+
                 '<div id="markerBodyContent">'+
                 '<div id="markerRegisterInfos">'+
                 getDatesList(training.dates)+
@@ -505,6 +566,7 @@
               }
               content +=
               '<div id="markerLocationInfos">'+
+              '<img src="./icons/trainingIcon.svg" alt="icône bleu de localisation" height="15px" width="15px" top="-5px"/>'+
               '<p id="markerTown">' + marker.lieu + '</p>'+
               '<div id="markerDetails">' +
               '<p>' + marker.adresse + '</p>'+
@@ -651,11 +713,45 @@
 
       function displayResults(selectedLocations){
         if(selectedLocations.length>0){
-          // $('#results').html('');
-          // $('#results').append("<div class='container'><p>"+selectedLocations.length+" sessions de formations trouvées</p>")
+          // Sort the list by date in ascending order
+          selectedLocations.sort(function(a, b) {
+            var dateA = a.dates.debut;
+            var dateB = b.dates.debut;
+            dateA = dateA.split("/");
+            dateB = dateB.split("/");
+            dateA = dateA[1]+"/"+dateA[0]+"/"+dateA[2];
+            dateB = dateB[1]+"/"+dateB[0]+"/"+dateB[2];
+            dateA = new Date(dateA).getTime();
+            dateB = new Date(dateB).getTime();
+            return dateA - dateB;
+          });
+
+          // Creating month labels
+          sessionsByMonthList = [];
+          for (var i = 0; i < selectedLocations.length; i++) {
+            var date = selectedLocations[i].dates.debut;
+            date = date.split("/");
+            var month = date[1];
+            var year = date[2];
+            if (sessionsByMonthList.length === 0 || month !== sessionsByMonthList[sessionsByMonthList.length - 1].month || year !== sessionsByMonthList[sessionsByMonthList.length - 1].year) {
+              sessionsByMonthList.push({month: month, year: year, session: [selectedLocations[i]]});
+            } else {
+              sessionsByMonthList[sessionsByMonthList.length - 1].session.push(selectedLocations[i]);
+            }
+          }
+
           $('#results').html('(' + selectedLocations.length + ')');
           var index = 0;
-          selectedLocations.map(function(selectedLocation){
+          sessionsByMonthList.map(function(sessionsInAMonth){
+            var monthLabel =
+            '<div class="monthBar">'+
+              '<h4>'+
+                moment().month(sessionsInAMonth.month - 1).format("MMMM").toUpperCase()+' '+sessionsInAMonth.year+
+              '</h4>'+
+            '</div>';
+            $('#results').append(monthLabel)
+            for (let i = 0; i < sessionsInAMonth.session.length; i++) {
+              var session = sessionsInAMonth.session[i];
               index++;
               id = 'subscribe' + index;
               var openRegistration =
@@ -663,7 +759,7 @@
                 '<img src="./icons/error.svg" alt="croix blanche sur rond rouge" height="25px" width="25px"/>'+
                 '<h6 style="color:red"">inscriptions fermées</h6>';
                 '</div>';
-              if (selectedLocation.dates.ouverte) {
+              if (session.dates.ouverte) {
                 openRegistration =
                 '<div id="subInfos">'+
                 '<img src="./icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>'+
@@ -674,13 +770,13 @@
               var courseReview =
               '<div class="card" >'+
               '<img src="./icons/presentation.svg" alt="icône de personnage faisant une présentation sur un tableau" height="50px" width="50px"/>'+
-              '<h6>Session du '+selectedLocation.dates.debut+' au '+selectedLocation.dates.fin+'</h6>'+
+              '<h6>Session du '+session.dates.debut+' au '+session.dates.fin+'</h6>'+
               '<div id="titleAndRegion" >'+
-              '<h6>'+selectedLocation.organisme+' </h6>'+
-              '<p>'+selectedLocation.region+'</p>'+
+              '<h6>'+session.organisme+' </h6>'+
+              '<p>'+session.region+'</p>'+
               '</div>'+
               // '<div id="trainingDetails">';
-              // Object.entries(selectedLocation).map(function(locationInfo){
+              // Object.entries(session).map(function(locationInfo){
               //   if(locationInfo[0] !=="dates" && locationInfo[0] !=="lat" && locationInfo[0]!=="lng" && locationInfo[0]!=="title" && locationInfo[0]!=="region" && locationInfo[0]!=="lieu" && locationInfo[0]!=="ouverte" && locationInfo[0]!=="url"){
               //     courseReview+='<p>'+locationInfo[1]+'</p>';
               //   }
@@ -689,14 +785,15 @@
               // '</div>'+
               '<div id="markerAndTown" >'+
               '<img src="./icons/trainingIcon.svg" alt="icône bleu de localisation" height="25px" width="25px"/>'+
-              '<h6>'+selectedLocation.lieu+'</h6>'+
+              '<h6>'+session.lieu+'</h6>'+
               '</div>'+
               openRegistration+
               '</div></div>';
               $('#results').append(courseReview)
-              if (selectedLocation.dates.ouverte) {
-                displayRegistration('#' + id, selectedLocation);
+              if (session.dates.ouverte) {
+                displayRegistration('#' + id, session);
               }
+            }
           })
         }
         else{
