@@ -319,11 +319,11 @@
 
       // DATA
       var locations = [
-        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"Gironde", dates:[{debut:"13/11/2019",fin:"15/11/2019", ouverte: true}, {debut:"29/01/2020",fin:"31/01/2020", ouverte: true}], lieu: "Bordeaux", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Bordeaux"},
-        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"Loire-Atlantique", dates:[{debut:"05/11/2019",fin:"07/11/2019", ouverte: true}, {debut:"15/01/2020",fin:"17/01/2020", ouverte: true}], lieu: "Nantes", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Nantes"},
-        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"Paris", dates:[{debut:"16/10/2019",fin:"18/10/2019", ouverte: true}, {debut:"20/11/2019",fin:"22/11/2019", ouverte: true}, {debut:"03/12/2019",fin:"05/12/2019", ouverte: true}, {debut:"22/01/2020",fin:"24/01/2020", ouverte: true}], lieu: "Paris", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Paris"},
-        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"Rhône", dates:[{debut:"19/11/2019",fin:"21/11/2019", ouverte: true}, {debut:"28/01/2020",fin:"30/01/2020", ouverte: true}], lieu: "Lyon", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Lyon"},
-        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019", ouverte: true}, {debut:"10/12/2019",fin:"12/12/2019", ouverte: true}], lieu: "Toulouse", tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Toulouse"},
+        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"33 - Gironde", dates:[{debut:"13/11/2019",fin:"15/11/2019", ouverte: true}, {debut:"29/01/2020",fin:"31/01/2020", ouverte: true}], lieu: "Bordeaux", codePostal: 33000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Bordeaux"},
+        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"44 - Loire-Atlantique", dates:[{debut:"05/11/2019",fin:"07/11/2019", ouverte: true}, {debut:"15/01/2020",fin:"17/01/2020", ouverte: true}], lieu: "Nantes", codePostal: 44000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Nantes"},
+        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"75 - Paris", dates:[{debut:"16/10/2019",fin:"18/10/2019", ouverte: true}, {debut:"20/11/2019",fin:"22/11/2019", ouverte: true}, {debut:"03/12/2019",fin:"05/12/2019", ouverte: true}, {debut:"22/01/2020",fin:"24/01/2020", ouverte: true}], lieu: "Paris", codePostal: 75000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Paris"},
+        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"69 - Rhône", dates:[{debut:"19/11/2019",fin:"21/11/2019", ouverte: true}, {debut:"28/01/2020",fin:"30/01/2020", ouverte: true}], lieu: "Lyon", codePostal: 69000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Lyon"},
+        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"31 - Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019", ouverte: true}, {debut:"10/12/2019",fin:"12/12/2019", ouverte: true}], lieu: "Toulouse", codePostal: 31000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Toulouse"},
       ]
 
       // var requestURL = './json/locations.json';
@@ -447,8 +447,28 @@
       ]
 
       // FUNCTIONS
+      var sortByAlphabet = function (list, property) {
+        if (!list || !list[0]) {
+          return false
+        }
+        if (property) {
+          if (typeof property === 'string') {
+            list.sort(function (a, b) {
+              return a[property].localeCompare(b[property]);
+            });
+          } else if (typeof property === 'number') {
+            list.sort(function (a, b) {
+              return a[property] - b[property];
+            });
+          }
+        } else {
+          list.sort();
+        }
+      }
+
       function buildSearchBar(fields){
         fields.map(function(field){
+          sortByAlphabet(field.values, 'name');
           if(field.type === 'select'){
             var fieldInput='<div class="col-md-2 inputWrapper"> <select class="custom-select mb-3" id="'+field.name+'"><option value="'+field.name+'">'+field.label+'</option>';
             field.values.map((value)=>{
