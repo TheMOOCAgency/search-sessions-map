@@ -459,7 +459,7 @@
           sortByAlphabet(field.values, 'name');
           if(field.type === 'select'){
             var fieldInput='<div class="col-md-2 inputWrapper"> <select class="custom-select mb-3" id="'+field.name+'"><option value="'+field.name+'">'+field.label+'</option>';
-            field.values.map((value)=>{
+            field.values.map(function (value) {
               fieldInput+='<option value="'+value.name+'">'+value.label+'</option>'
             })  
             fieldInput+='</select>';
