@@ -597,17 +597,15 @@
 
               google.maps.event.addListener(clickedMarker,'domready',function() {
                 for (let j = 0; j < markerSaved.dates.length; j++) {
-                  var thisClickedSession;
+                  var thisClickedSession = {};
                   for (let k = 0; k < Object.keys(markerSaved).length; k++) {
-                    // console.log(k);
                     if (Object.keys(markerSaved)[k] !== 'dates') {
-                      //console.log(markerSaved[Object.keys(markerSaved)[k]]);
-                      // thisClickedSession[Object.keys(markerSaved)[k]] = markerSaved[Object.keys(markerSaved)[k]];
+                      thisClickedSession[Object.keys(markerSaved)[k]] = markerSaved[Object.keys(markerSaved)[k]];
                     } else {
-                      //thisClickedSession.dates = markerSaved.dates[j];
+                      thisClickedSession.dates = markerSaved.dates[j];
                     }
                   }
-                  displayRegistration('#subscribeMarker'+j, markerSaved);
+                  displayRegistration('#subscribeMarker'+j, thisClickedSession);
                 }
               });
             });
@@ -790,11 +788,13 @@
         launchSearch();
       });
 
+      // Sending data collected by the user clicking on a session
       var displayRegistration = function (id, registration) {
         $(id).on('click', function(){
           var dataToSend = JSON.parse(JSON.stringify(registration));
 
           console.log('Afficher formulaire d\'inscription de : ' + dataToSend.title);
+          console.log(dataToSend);
           // l'objet dataToSend contient toutes les infos dont on a besoin pour pré-remplir les champs du formulaire d'inscription.
           // Ici faire l'appel du formulaire du microsite
         });
