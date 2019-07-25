@@ -221,6 +221,8 @@
         color: #EDF6EB;
         background-color: #3562C5;
         border-radius: 0px;
+        height: 20px;
+        padding-top: 3px;
       }
       #markerRegistration > button:hover{
         color: #3562C5;
@@ -248,6 +250,7 @@
         background-color: #EDF6EB;
         font-weight: 500;
         margin-bottom: 6px;
+        height: 20px;
       }
       #markerRegistration{
         display: inline-block;
@@ -311,6 +314,8 @@
             autoUpdateInput: true,
           }
         );
+        document.getElementById('datepicker').value = '';
+        $('#reinitializer')[0].style.display = 'none';
       } );
     </script>
 
@@ -318,135 +323,118 @@
     <script>
 
       // DATA
-      var locations = [
-        {lat: 44.837789, lng: -0.57918, organisme:"Formateurs de Bordeaux", region:"Nouvelle-Aquitaine", departement:"33 - Gironde", dates:[{debut:"13/11/2019",fin:"15/11/2019", ouverte: true}, {debut:"29/01/2020",fin:"31/01/2020", ouverte: true}], lieu: "Bordeaux", codePostal: 33000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Bordeaux"},
-        {lat: 47.216667, lng: -1.550000, organisme:"Formateurs de Nantes", region:"Pays de la Loire", departement:"44 - Loire-Atlantique", dates:[{debut:"05/11/2019",fin:"07/11/2019", ouverte: true}, {debut:"15/01/2020",fin:"17/01/2020", ouverte: true}], lieu: "Nantes", codePostal: 44000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Nantes"},
-        {lat: 48.8534, lng: 2.3488, organisme:"Formateurs de Paris", region:"Île-de-France", departement:"75 - Paris", dates:[{debut:"16/10/2019",fin:"18/10/2019", ouverte: true}, {debut:"20/11/2019",fin:"22/11/2019", ouverte: true}, {debut:"03/12/2019",fin:"05/12/2019", ouverte: true}, {debut:"22/01/2020",fin:"24/01/2020", ouverte: true}], lieu: "Paris", codePostal: 75000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Paris"},
-        {lat: 45.7500, lng: 4.8500, organisme:"Formateurs de Lyon", region:"Auvergne-Rhône-Alpes", departement:"69 - Rhône", dates:[{debut:"19/11/2019",fin:"21/11/2019", ouverte: true}, {debut:"28/01/2020",fin:"30/01/2020", ouverte: true}], lieu: "Lyon", codePostal: 69000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Lyon"},
-        {lat: 43.600, lng: 1.433333, organisme:"Formateurs de Toulouse", region:"Occitanie", departement:"31 - Haute-Garonne", dates:[{debut:"29/10/2019",fin:"31/10/2019", ouverte: true}, {debut:"10/12/2019",fin:"12/12/2019", ouverte: true}], lieu: "Toulouse", codePostal: 31000, tel: "01.00.00.00.00", adresse: "4 rue Rambervilliers", url: "", title:"Formation de Toulouse"},
-      ]
+      var locations;
+      var markerLocations;
+      var saveMarkerLocations;
+      var sessionsLocations;
+      var getFieldValues;
+      var fields;
 
-      // var requestURL = './json/locations.json';
-      // var request = new XMLHttpRequest();
-      // request.open('GET', requestURL);
-      // request.responseType = 'json';
-      // request.send();
-      // request.onload = function() {
-      //   var locationsTEST = request.response;
-      //   console.log(locationsTEST);
-      // }
+      // Data Base loading, as a callback of googleapis. When DB is loaded, we show the map and the filters bar
+      var startAPI = function () {
+        var getLocations = new Promise(function(resolve, reject) {
+          var requestURL = './json/locations.json';
+          var request = new XMLHttpRequest();
+          request.open('GET', requestURL);
+          request.responseType = 'json';
+          request.send();
+          request.onload = function() {
+            locations = request.response;
+            resolve(setDatas());
+          }
+        });
+      }
 
-      var markerLocations = (function () {
-        var aggregateLocations = function (location, i) {
-          i ++;
-          for (var j = i; j < aggregatedLocationsList.length; j++) {
-            if (location.lat === aggregatedLocationsList[j].lat && location.lng === aggregatedLocationsList[j].lng) {
-              location.trainings.push(
-                {
-                  organisme: aggregatedLocationsList[j].organisme,
-                  dates: aggregatedLocationsList[j].dates,
-                  tel: aggregatedLocationsList[j].tel,
-                  title: aggregatedLocationsList[j].title,
-                }
-              );
-              aggregatedLocationsList.splice(j, 1);
-              j--;
+      // This is a callback of startAPI(), wich show the API with a fully loaded DB containing all locations
+      var setDatas = function () {
+        markerLocations = locations;
+
+        saveMarkerLocations = JSON.parse(JSON.stringify(markerLocations));
+
+        sessionsLocations = (function () {
+          var buildASession = function (i, j) {
+            var oneSession = JSON.parse(JSON.stringify(locations[i]));
+            oneSession.dates = {
+              debut: locations[i].dates[j].debut,
+              fin: locations[i].dates[j].fin,
+              ouverte: locations[i].dates[j].ouverte
+            };
+            return oneSession
+          };
+
+          var sessions = [];
+          for (var i = 0; i < locations.length; i++) {
+            for (var j = 0; j < locations[i].dates.length; j++) {
+              sessions.push(buildASession(i, j));
+            };
+          }
+          return sessions
+        })();
+
+        getFieldValues = function (field) {
+          values = [];
+          for (var i = 0; i < locations.length; i++) {
+            var alreadyExist = false;
+            for (var j = 0; j < values.length; j++) {
+              if (values[j] === locations[i][field]) {
+                alreadyExist = true;
+              }
+            }
+            if (!alreadyExist) {
+              values.push(locations[i][field]);
             }
           }
-          delete location.organisme;
-          delete location.dates;
-          delete location.tel;
-          delete location.title;
+          var fields = function (values) {
+            fieldsList = [];
+            for (var i = 0; i < values.length; i++) {
+              fieldsList.push({label:values[i], name:values[i]})
+            }
+            return fieldsList
+          }
+          return fields(values);
         };
 
-        var aggregatedLocationsList = JSON.parse(JSON.stringify(locations));
-        for (var i = 0; i < aggregatedLocationsList.length; i++) {
-          aggregatedLocationsList[i].trainings = [];
-          aggregatedLocationsList[i].trainings.push(
-            {
-              organisme: aggregatedLocationsList[i].organisme,
-              dates: aggregatedLocationsList[i].dates,
-              tel: aggregatedLocationsList[i].tel,
-              title: aggregatedLocationsList[i].title,
-            }
-          );
-          aggregateLocations(aggregatedLocationsList[i], i);
-        }
-        return aggregatedLocationsList
-      })();
-
-      var saveMarkerLocations = JSON.parse(JSON.stringify(markerLocations));
-
-      var sessionsLocations = (function () {
-        var buildASession = function (i, j) {
-          var oneSession = JSON.parse(JSON.stringify(locations[i]));
-          oneSession.dates = {
-            debut: locations[i].dates[j].debut,
-            fin: locations[i].dates[j].fin,
-            ouverte: locations[i].dates[j].ouverte
-          };
-          return oneSession
-        };
-
-        var sessions = [];
-        for (var i = 0; i < locations.length; i++) {
-          for (var j = 0; j < locations[i].dates.length; j++) {
-            sessions.push(buildASession(i, j));
-          };
-        }
-        return sessions
-      })();
-
-      var getFieldValues = function (field) {
-        values = [];
-        for (var i = 0; i < locations.length; i++) {
-          var alreadyExist = false;
-          for (var j = 0; j < values.length; j++) {
-            if (values[j] === locations[i][field]) {
-              alreadyExist = true;
-            }
-          }
-          if (!alreadyExist) {
-            values.push(locations[i][field]);
-          }
-        }
-        var fields = function (values) {
-          fieldsList = [];
-          for (var i = 0; i < values.length; i++) {
-            fieldsList.push({label:values[i], name:values[i]})
-          }
-          return fieldsList
-        }
-        return fields(values);
+        fields=[
+          {
+            label:'Région',
+            name:'region',
+            values:getFieldValues('region'),
+            type:'select'
+          },
+          {
+            label:'Département',
+            name:'departement',
+            values:getFieldValues('departement'),
+            type:'select'
+          },
+          {
+            label:'Organisme',
+            name:'organisme',
+            values:getFieldValues('organisme'),
+            type:'select'
+          },
+          {
+            label:'Date',
+            type:'dateRangePicker',
+            name:'datepicker'
+          },
+        ];
+        buildSearchBar(fields);
+        $('#datepicker').val('');
+        launchSearch();
       };
-
-      var fields=[
-        {
-          label:'Région',
-          name:'region',
-          values:getFieldValues('region'),
-          type:'select'
-        },
-        {
-          label:'Département',
-          name:'departement',
-          values:getFieldValues('departement'),
-          type:'select'
-        },
-        {
-          label:'Organisme',
-          name:'organisme',
-          values:getFieldValues('organisme'),
-          type:'select'
-        },
-        {
-          label:'Date',
-          type:'dateRangePicker',
-          name:'datepicker'
-        },
-      ]
+      
 
       // FUNCTIONS
+      var launchSearch = function () {
+        // First filtering, that generate one result (location) per session
+        locations = filterData();
+        displayResults(locations);
+        // There is is a second filtering exclusively for markers, because we do not want a marker for each session, only one marker for each training (wich contains X sessions)
+        markerLocations = filterMarkers();
+        initMap();
+      }
+
       var sortByAlphabet = function (list, property) {
         if (!list || !list[0]) {
           return false
@@ -500,6 +488,7 @@
           $('#organisme')[0].value = 'organisme';
           $('#datepicker')[0].value = '';
           $('#reinitializer')[0].style.display = 'none';
+          launchSearch();
         })
       }
       
@@ -550,7 +539,10 @@
                 for (var i = 0; i < dates.length; i++) {
                   list += '<li>Session du ' + dates[i].debut + ' au ' + dates[i].fin;
                   if (dates[i].ouverte) {
-                    list += '<span style="color:green"> inscriptions ouvertes</span>';
+                    list += '<span style="color:green"> inscriptions ouvertes</span>'+
+                    '<div id="markerRegistration">'+
+                      '<button id="subscribeMarker'+i+'" class="secondColorBg mainColor textBold">S\'inscrire</button>'+
+                    '</div>';
                   } else {
                     list += '<span style="color:red> inscriptions fermées</span>';
                   }
@@ -560,38 +552,22 @@
                 return list
               };
 
-              // We check if there is at least one session open, if true we show registration button
-              var openRegistration = function(dates, j) {
-                for (var i = 0; i < dates.length; i++) {
-                  if (dates[i].ouverte) {
-                    return '<div id="markerRegistration">'+
-                    '<button id="subscribeMarker'+j+'" class="secondColorBg mainColor textBold">S\'inscrire</button>'+
-                    '</div>';
-                  }
-                }
-                return ''
-              }
-
               var content = '<div id="content">';
-              for (let j = 0; j < marker.trainings.length; j++) {
-                training = marker.trainings[j];
                 content +=
                 '</div>'+
-                '<h1 id="markerFirstHeading">' + training.organisme + ' <span>(' + marker.region + ')</span></h1>'+
+                '<h1 id="markerFirstHeading">' + marker.organisme + ' <span>(' + marker.region + ')</span></h1>'+
                 '<div id="markerBodyContent">'+
                 '<div id="markerRegisterInfos">'+
-                getDatesList(training.dates)+
-                openRegistration(training.dates, j)+
+                getDatesList(marker.dates)+
                 '</div>'+
                 '</div>';
-              }
               content +=
               '<div id="markerLocationInfos">'+
               '<img src="./icons/trainingIcon.svg" alt="icône bleu de localisation" height="15px" width="15px" top="-5px"/>'+
               '<p id="markerTown">' + marker.lieu + '</p>'+
               '<div id="markerDetails">' +
               '<p>' + marker.adresse + '</p>'+
-              '<p> tel : ' + training.tel + '</p>'+
+              '<p> tel : ' + marker.tel + '</p>'+
               '</div>'+
               '</div>';
 
@@ -620,18 +596,27 @@
               clickedMarker.open(map, markers[i]);
 
               google.maps.event.addListener(clickedMarker,'domready',function() {
-                for (let j = 0; j < markerSaved.trainings.length; j++) {
+                for (let j = 0; j < markerSaved.dates.length; j++) {
+                  var thisClickedSession;
+                  for (let k = 0; k < Object.keys(markerSaved).length; k++) {
+                    console.log(k);
+                    if (Object.keys(markerSaved)[k] !== 'dates') {œ 
+                      //console.log(markerSaved[Object.keys(markerSaved)[k]]);
+                      // thisClickedSession[Object.keys(markerSaved)[k]] = markerSaved[Object.keys(markerSaved)[k]];
+                    } else {
+                      //thisClickedSession.dates = markerSaved.dates[j];
+                    }
+                  }
                   displayRegistration('#subscribeMarker'+j, markerSaved);
                 }
               });
             });
           }
         })();
-
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        }
+        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
 
       var momentification = function (date) {
         date=date.split('/');
@@ -686,21 +671,8 @@
           var validLocation=true;
           selectedFilters.map(function(filter){
 
-            if (filter.name!=="datepicker" && filter.name!=="organisme") {
+            if (filter.name!=="datepicker") {
               if(filter.name!=filter.value && location[filter.name]!==filter.value){
-                validLocation=false;
-              }
-            }
-
-            // Check in every training if there is an organisme that is OK with the search, if not, return false
-            if(filter.name === "organisme" && filter.name!=filter.value) {
-              var testOrganisme = false;
-              for (var i = 0; i < location.trainings.length; i++) {
-                if (location.trainings[i].organisme === filter.value) {
-                  testOrganisme = true;
-                }
-              }
-              if (!testOrganisme) {
                 validLocation=false;
               }
             }
@@ -713,13 +685,11 @@
               date2 = momentification(date2);
               var locationDate;
 
-              // Check in every dates (j) in every training (i) if there at least one date wich is OK with the search, if not, return false
-              for (var i = 0; i < location.trainings.length; i++) {
-                for (let j = 0; j < location.trainings[i].dates.length; j++) {
-                  locationDate = momentification(location.trainings[i].dates[j].debut);
-                  if(moment(locationDate).isAfter(date1) && moment(locationDate).isBefore(date2)){
-                    testDates=true;
-                  }
+              // Check in every dates (j) if there at least one date wich is OK with the search, if not, return false
+              for (let j = 0; j < location.dates.length; j++) {
+                locationDate = momentification(location.dates[j].debut);
+                if(moment(locationDate).isAfter(date1) && moment(locationDate).isBefore(date2)){
+                  testDates=true;
                 }
               }
               if(!testDates){
@@ -796,14 +766,6 @@
               '<h6>'+session.organisme+' </h6>'+
               '<p>'+session.region+'</p>'+
               '</div>'+
-              // '<div id="trainingDetails">';
-              // Object.entries(session).map(function(locationInfo){
-              //   if(locationInfo[0] !=="dates" && locationInfo[0] !=="lat" && locationInfo[0]!=="lng" && locationInfo[0]!=="title" && locationInfo[0]!=="region" && locationInfo[0]!=="lieu" && locationInfo[0]!=="ouverte" && locationInfo[0]!=="url"){
-              //     courseReview+='<p>'+locationInfo[1]+'</p>';
-              //   }
-              // })
-              // courseReview+=
-              // '</div>'+
               '<div id="markerAndTown" >'+
               '<img src="./icons/trainingIcon.svg" alt="icône bleu de localisation" height="25px" width="25px"/>'+
               '<h6>'+session.lieu+'</h6>'+
@@ -824,32 +786,14 @@
       }
 
       // ACTIONS
-      $(document).ready(function(){
-        buildSearchBar(fields);
-        $('#datepicker').val('');
-      });
       $("#search").on('click', function(){
-        // First filtering, that generate one result (location) per session
-        locations = filterData();
-        displayResults(locations);
-        // There is is a second filtering exclusively for markers, because we do not want a marker for each session, only one marker for each training (wich contains X sessions)
-        markerLocations = filterMarkers();
-        initMap();
+        launchSearch();
       });
 
       var displayRegistration = function (id, registration) {
         $(id).on('click', function(){
           var dataToSend = JSON.parse(JSON.stringify(registration));
 
-          // If a marker with multiple trainings was clicked we keep the training linked to the id, remove all others and make dataToSend having same format has a non multiple selection
-          if (dataToSend.trainings) {
-            trainingId = /\d+/i.exec(id)[0];
-            dataToSend.dates = dataToSend.trainings[trainingId].dates;
-            dataToSend.organisme = dataToSend.trainings[trainingId].organisme;
-            dataToSend.tel = dataToSend.trainings[trainingId].tel;
-            dataToSend.title = dataToSend.trainings[trainingId].title;
-            delete dataToSend.trainings
-          }
           console.log('Afficher formulaire d\'inscription de : ' + dataToSend.title);
           // l'objet dataToSend contient toutes les infos dont on a besoin pour pré-remplir les champs du formulaire d'inscription.
           // Ici faire l'appel du formulaire du microsite
@@ -859,8 +803,7 @@
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZPfRQkb-RFe5AUzHHmW_Q2ojvmIG8-AU&callback=initMap">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZPfRQkb-RFe5AUzHHmW_Q2ojvmIG8-AU&callback=startAPI">
     </script>
   </body>
 </html>
