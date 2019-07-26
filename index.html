@@ -245,6 +245,7 @@
       #markerTrainingDates{
         display: inline-block;
         list-style-type: none;
+        margin-bottom: 0px;
       }
       #markerTrainingDates > li{
         background-color: #EDF6EB;
@@ -329,6 +330,11 @@
       var sessionsLocations;
       var getFieldValues;
       var fields;
+      var urlForm = 'http://inveest.the-mooc-agency.com/register';
+      var of;
+      var ville;
+      var date_debut;
+      var date_fin;
 
       // Data Base loading, as a callback of googleapis. When DB is loaded, we show the map and the filters bar
       var startAPI = function () {
@@ -354,17 +360,13 @@
         sessionsLocations = (function () {
           var buildASession = function (i, j) {
             var oneSession = JSON.parse(JSON.stringify(locations[i]));
-            oneSession.dates = {
-              debut: locations[i].dates[j].debut,
-              fin: locations[i].dates[j].fin,
-              ouverte: locations[i].dates[j].ouverte
-            };
+            oneSession.sessions = locations[i].sessions[j];
             return oneSession
           };
 
           var sessions = [];
           for (var i = 0; i < locations.length; i++) {
-            for (var j = 0; j < locations[i].dates.length; j++) {
+            for (var j = 0; j < locations[i].sessions.length; j++) {
               sessions.push(buildASession(i, j));
             };
           }
@@ -376,12 +378,16 @@
           for (var i = 0; i < locations.length; i++) {
             var alreadyExist = false;
             for (var j = 0; j < values.length; j++) {
-              if (values[j] === locations[i][field]) {
+              if (values[j] === locations[i].sites.adresse[field] || values[j] === locations[i].of[field]) {
                 alreadyExist = true;
               }
             }
             if (!alreadyExist) {
-              values.push(locations[i][field]);
+              if (field === 'nom') {
+                values.push(locations[i].of[field]);
+              } else {
+                values.push(locations[i].sites.adresse[field]);
+              }
             }
           }
           var fields = function (values) {
@@ -409,8 +415,8 @@
           },
           {
             label:'Organisme',
-            name:'organisme',
-            values:getFieldValues('organisme'),
+            name:'nom',
+            values:getFieldValues('nom'),
             type:'select'
           },
           {
@@ -470,7 +476,7 @@
           }
         })
         var updateReinitializer = function () {
-          if ($('#region')[0].value !== 'region' || $('#departement')[0].value !== 'departement' || $('#organisme')[0].value !== 'organisme' || $('#datepicker')[0].value !== ''){
+          if ($('#region')[0].value !== 'region' || $('#departement')[0].value !== 'departement' || $('#nom')[0].value !== 'nom' || $('#datepicker')[0].value !== ''){
             $('#reinitializer')[0].style.display = 'initial';
           } else {
             $('#reinitializer')[0].style.display = 'none';
@@ -485,7 +491,7 @@
         $('#reinitializer').click(function () {
           $('#region')[0].value = 'region';
           $('#departement')[0].value = 'departement';
-          $('#organisme')[0].value = 'organisme';
+          $('#nom')[0].value = 'nom';
           $('#datepicker')[0].value = '';
           $('#reinitializer')[0].style.display = 'none';
           launchSearch();
@@ -507,7 +513,7 @@
         // The map() method here has nothing to do with the Google Maps API.
         var markers = markerLocations.map(function(location, i) {
           return new google.maps.Marker({
-            position: location,
+            position: location.sites.position,
             map: map,
             label: {
               text: labels[i % labels.length],
@@ -537,8 +543,9 @@
               var getDatesList = function (dates) {
                 var list = '<ul id="markerTrainingDates">';
                 for (var i = 0; i < dates.length; i++) {
-                  list += '<li>Session du ' + dates[i].debut + ' au ' + dates[i].fin;
-                  if (dates[i].ouverte) {
+                  list += '<li>Session du ' + dates[i].periode.debut + ' au ' + dates[i].periode.fin;
+                  // PUT HERE SOME TEST TO CHECK IF REGISTRATION DATE STILL OK /!\
+                  if (true) {
                     list += '<span style="color:green"> inscriptions ouvertes</span>'+
                     '<div id="markerRegistration">'+
                       '<button id="subscribeMarker'+i+'" class="secondColorBg mainColor textBold">S\'inscrire</button>'+
@@ -555,20 +562,20 @@
               var content = '<div id="content">';
                 content +=
                 '</div>'+
-                '<h1 id="markerFirstHeading">' + marker.organisme + ' <span>(' + marker.region + ')</span></h1>'+
+                '<h1 id="markerFirstHeading">' + marker.of.nom + ' <span>(' + marker.sites.adresse.region + ')</span></h1>'+
                 '<div id="markerBodyContent">'+
                 '<div id="markerRegisterInfos">'+
-                getDatesList(marker.dates)+
+                getDatesList(marker.sessions)+
                 '</div>'+
                 '</div>';
               content +=
               '<div id="markerLocationInfos">'+
               '<img src="./icons/trainingIcon.svg" alt="icône bleu de localisation" height="15px" width="15px" top="-5px"/>'+
-              '<p id="markerTown">' + marker.lieu + '</p>'+
-              '<div id="markerDetails">' +
-              '<p>' + marker.adresse + '</p>'+
-              '<p> tel : ' + marker.tel + '</p>'+
-              '</div>'+
+              '<p id="markerTown">' + marker.sites.adresse.ville + '</p>'+
+              // '<div id="markerDetails">' +
+              // '<p>' + marker.adresse + '</p>'+
+              // '<p> tel : ' + marker.sites.tel + '</p>'+
+              // '</div>'+
               '</div>';
 
               return content
@@ -596,15 +603,9 @@
               clickedMarker.open(map, markers[i]);
 
               google.maps.event.addListener(clickedMarker,'domready',function() {
-                for (let j = 0; j < markerSaved.dates.length; j++) {
-                  var thisClickedSession = {};
-                  for (let k = 0; k < Object.keys(markerSaved).length; k++) {
-                    if (Object.keys(markerSaved)[k] !== 'dates') {
-                      thisClickedSession[Object.keys(markerSaved)[k]] = markerSaved[Object.keys(markerSaved)[k]];
-                    } else {
-                      thisClickedSession.dates = markerSaved.dates[j];
-                    }
-                  }
+                for (let j = 0; j < markerSaved.sessions.length; j++) {
+                  var thisClickedSession = JSON.parse(JSON.stringify(markerSaved));
+                  thisClickedSession.sessions = markerSaved.sessions[j];
                   displayRegistration('#subscribeMarker'+j, thisClickedSession);
                 }
               });
@@ -636,15 +637,15 @@
           var validLocation=true;
           selectedFilters.map(function(filter){
             //Avoid cases where field is datepicker type / search field value = search field name => means all results
-            if(filter.name!=="datepicker" && filter.name!=filter.value && location[filter.name]!==filter.value){
+            if(filter.name!=="datepicker" && filter.name!=filter.value && (location.of[filter.name]!==filter.value && location.sites.adresse[filter.name]!==filter.value)){
               validLocation=false;
             }
-            else if(filter.name==="datepicker" && filter.value!=="" && location.dates && location.dates.debut){
+            else if(filter.name==="datepicker" && filter.value!=="" && location.sessions.periode && location.sessions.periode.debut){
               var date1=filter.value.split(' - ')[0];
               date1 = momentification(date1);
               var date2=filter.value.split(' - ')[1];
               date2 = momentification(date2);
-              locationDate = momentification(location.dates.debut);
+              locationDate = momentification(location.sessions.periode.debut);
               if(moment(locationDate).isBefore(date1) || moment(locationDate).isAfter(date2)){
                 validLocation=false;
               }
@@ -668,9 +669,9 @@
         var selectedLocations = dataToFilter.filter(function(location){
           var validLocation=true;
           selectedFilters.map(function(filter){
-
+            
             if (filter.name!=="datepicker") {
-              if(filter.name!=filter.value && location[filter.name]!==filter.value){
+              if(filter.name!=filter.value && (location.of[filter.name]!==filter.value && location.sites.adresse[filter.name]!==filter.value)){
                 validLocation=false;
               }
             }
@@ -684,8 +685,8 @@
               var locationDate;
 
               // Check in every dates (j) if there at least one date wich is OK with the search, if not, return false
-              for (let j = 0; j < location.dates.length; j++) {
-                locationDate = momentification(location.dates[j].debut);
+              for (let j = 0; j < location.sessions.length; j++) {
+                locationDate = momentification(location.sessions[j].periode.debut);
                 if(moment(locationDate).isAfter(date1) && moment(locationDate).isBefore(date2)){
                   testDates=true;
                 }
@@ -704,8 +705,8 @@
         if(selectedLocations.length>0){
           // Sort the list by date in ascending order
           selectedLocations.sort(function(a, b) {
-            var dateA = a.dates.debut;
-            var dateB = b.dates.debut;
+            var dateA = a.sessions.periode.debut;
+            var dateB = b.sessions.periode.debut;
             dateA = dateA.split("/");
             dateB = dateB.split("/");
             dateA = dateA[1]+"/"+dateA[0]+"/"+dateA[2];
@@ -718,7 +719,7 @@
           // Creating month labels
           sessionsByMonthList = [];
           for (var i = 0; i < selectedLocations.length; i++) {
-            var date = selectedLocations[i].dates.debut;
+            var date = selectedLocations[i].sessions.periode.debut;
             date = date.split("/");
             var month = date[1];
             var year = date[2];
@@ -748,7 +749,8 @@
                 '<img src="./icons/error.svg" alt="croix blanche sur rond rouge" height="25px" width="25px"/>'+
                 '<h6 style="color:red"">inscriptions fermées</h6>';
                 '</div>';
-              if (session.dates.ouverte) {
+              // PUT HERE SOME TEST TO CHECK IF REGISTRATION DATE STILL OK /!\
+              if (true) {
                 openRegistration =
                 '<div id="subInfos">'+
                 '<img src="./icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>'+
@@ -759,19 +761,20 @@
               var courseReview =
               '<div class="card" >'+
               '<img src="./icons/presentation.svg" alt="icône de personnage faisant une présentation sur un tableau" height="50px" width="50px"/>'+
-              '<h6>Session du '+session.dates.debut+' au '+session.dates.fin+'</h6>'+
+              '<h6>Session du '+session.sessions.periode.debut+' au '+session.sessions.periode.fin+'</h6>'+
               '<div id="titleAndRegion" >'+
-              '<h6>'+session.organisme+' </h6>'+
-              '<p>'+session.region+'</p>'+
+              '<h6>'+session.of.nom+' </h6>'+
+              '<p>'+session.sites.adresse.region+'</p>'+
               '</div>'+
               '<div id="markerAndTown" >'+
               '<img src="./icons/trainingIcon.svg" alt="icône bleu de localisation" height="25px" width="25px"/>'+
-              '<h6>'+session.lieu+'</h6>'+
+              '<h6>'+session.sites.adresse.ville+'</h6>'+
               '</div>'+
               openRegistration+
               '</div></div>';
               $('#results').append(courseReview)
-              if (session.dates.ouverte) {
+              // PUT HERE SOME TEST TO CHECK IF REGISTRATION DATE STILL OK /!\
+              if (true) {
                 displayRegistration('#' + id, session);
               }
             }
@@ -791,12 +794,17 @@
       // Sending data collected by the user clicking on a session
       var displayRegistration = function (id, registration) {
         $(id).on('click', function(){
-          var dataToSend = JSON.parse(JSON.stringify(registration));
 
-          console.log('Afficher formulaire d\'inscription de : ' + dataToSend.title);
-          console.log(dataToSend);
-          // l'objet dataToSend contient toutes les infos dont on a besoin pour pré-remplir les champs du formulaire d'inscription.
-          // Ici faire l'appel du formulaire du microsite
+          of = registration.of.id;
+          ville = registration.sites.adresse.ville;
+          date_debut = registration.sessions.periode.debut;
+          date_fin = registration.sessions.periode.fin;
+
+          console.log(urlForm + '?of=' + of + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin);
+
+          // redirect the user to the form
+          // window.location.href = urlForm + '?of=' + of + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin;
+          window.open(urlForm + '?of=' + of + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin);
         });
       }
 
