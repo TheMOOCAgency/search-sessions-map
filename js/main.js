@@ -7,8 +7,8 @@ var saveMarkerLocations;
 var sessionsLocations;
 var getFieldValues;
 var fields;
-var urlForm = 'http://inveest.the-mooc-agency.com/register'; // The form used for registration (wich will be improved with datas collected when user click on a session subscription button (see line 'redirect the user to the form'))
-var urlLocations = './json/locations.json'; // The database containing all existing trainings for the microsite
+var urlForm = '/register'; // The form used for registration (wich will be improved with datas collected when user click on a session subscription button (see line 'redirect the user to the form'))
+var urlLocations = '/media/microsite/inveest/search-sessions-map/json/locations.json'; // The database containing all existing trainings for the microsite
 var of;
 var ville;
 var date_debut;
