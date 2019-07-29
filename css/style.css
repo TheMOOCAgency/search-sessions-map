@@ -75,7 +75,8 @@ p{
   color:#f7c30d;
 }
 .secondColorBg{
-  background-color:#2ED801;
+  background-color:#2ED801 !important;
+  background-image :none !important; 
 }
 .filterIntro{
   font-weight: bold;
@@ -157,9 +158,11 @@ select, input{
   padding-top: 16px;
 }
 .monthBar > h4{
+  color:white!important;
   font-size: 16px;
 }
 #subInfos{
+  padding-top: 15px;
   width: 40%;
 }
 #subInfos > *{
@@ -252,3 +255,15 @@ select, input{
   text-align: center;
   margin-top: 0px;
 }
+
+/* modif Daivis */
+/* modif Daivis */
+/* modif Daivis */
+.whiteH6{
+	color:#145b90;
+}
+
+/* modif Daivis */
+/* modif Daivis */
+/* modif Daivis */
+/* modif Daivis */
