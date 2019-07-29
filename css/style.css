@@ -1,0 +1,254 @@
+#banner{
+  background-color:#4882FF;
+}
+#map {
+  height: 50vh;
+  width: 100%;
+}
+#mapWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0px;
+}
+#searchWrapper{
+  padding:0px;
+}
+#datepicker{
+  color: #EDF6EB;
+  border: 1px solid #3562C5;
+}
+.searchButton{
+  display: inline-flex;
+  margin-left: -200px;
+}
+.searchButton > p{
+  font-size: 12px;
+  color: #EDF6EB;
+  position: relative;
+  left: -120px;
+  top: 45px;
+  text-decoration: underline;
+  display: none;
+}
+.searchButton > button:hover{
+  color:#2ED801!important;
+  background-color: #EDF6EB;
+}
+.row{
+  display: inline-flex;
+  width: 90%;
+}
+p{
+  margin:0;
+}
+.inputWrapper{
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.titleSearch{
+  width: 400px;
+  margin-left: 200px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-weight: 900;
+  font-size:2rem;
+}
+.hide{
+  display: none;
+}
+.custom-select{
+  margin: 0!important;
+  border: 1px solid #3562C5;
+}
+.mainColor{
+  color:#4983FF
+}
+.secondColor{
+  color:#f7c30d;
+}
+.secondColorBg{
+  background-color:#2ED801;
+}
+.filterIntro{
+  font-weight: bold;
+  display: inline-flex;
+  color: #EDF6EB;
+  margin-right: 20px;
+}
+.textBold{
+  font-weight: bold;
+}
+button{
+  border: 0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+select, input{
+  background-color: #3562C5!important;
+  color: #EDF6EB!important;
+  font-weight: 500!important;
+}
+#search, #register{
+  color: #EDF6EB;
+}
+#searchCourses{
+  padding: 20px 0px;
+}
+#resultsWrapper{
+  padding: 20px;
+}
+#reinitializer:hover{
+  color: #3562C5;
+  cursor: pointer;
+}
+.card{
+  background-color: #DDEEFF;
+  margin: 10px 0px;
+  padding:20px;
+  flex-direction: row !important;
+}
+.card > *{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 20%;
+}
+.card > img{
+  width: 6%;
+}
+.card > h6, .card > #titleAndRegion{
+  display: inline-block;
+  /* width: 200px; */
+}
+.card > #subInfos > button{
+  height: 50px;
+  color:  #EDF6EB;
+  border-radius: 0px;
+}
+.card > #subInfos > button:hover{
+  color:#2ED801!important;
+  background-color: #EDF6EB;
+}
+#titleAndRegion {
+  color: #145b90;
+}
+#titleAndRegion > p {
+  font-style: italic;
+}
+/* #trainingDetails{
+  display: inline-block;
+  width: 400px;
+} */
+.monthBar{
+  background-color: #4882FF;
+  color: #EDF6EB;
+  height: 50px;
+  padding-left: 75px;
+  padding-top: 16px;
+}
+.monthBar > h4{
+  font-size: 16px;
+}
+#subInfos{
+  width: 40%;
+}
+#subInfos > *{
+  display: inline-block;
+}
+#subInfos > img{
+  margin-right: 20px;
+}
+#subInfos > h6{
+  margin-right: 20px;
+}
+#markerAndTown{
+  width: 14%;
+  padding-top: 15px;
+}
+#markerAndTown > *{
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 400;
+  color: #5E747D;
+}
+#resultsWrapper{
+  width: 80%;
+  margin: 0 auto;
+}
+#resultsWrapper > div{
+  color: #145b90;
+}
+#resultsWrapper > div > h4{
+  display: inline-block;
+}
+#markerLocationInfos{
+  text-align: center;
+}
+#markerLocationInfos > img{
+  position: relative;
+  top: -5px;
+}
+#markerRegistration > button{
+  color: #EDF6EB;
+  background-color: #3562C5;
+  border-radius: 0px;
+  height: 20px;
+  padding-top: 3px;
+}
+#markerRegistration > button:hover{
+  color: #3562C5;
+  background-color: #EDF6EB;
+}
+#markerFirstHeading{
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #145b90;
+}
+#markerFirstHeading > span{
+  font-weight: 400;
+}
+#markerBodyContent{
+  color: #0a4e56;
+  text-align: center;
+}
+#markerTrainingDates{
+  display: inline-block;
+  list-style-type: none;
+  margin-bottom: 0px;
+}
+#markerTrainingDates > li{
+  background-color: #EDF6EB;
+  font-weight: 500;
+  margin-bottom: 6px;
+  height: 20px;
+}
+#markerRegistration{
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10px;
+  text-align: center;
+}
+#markerTown{
+  display: inline-block;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 0px;
+  color: #145b90;
+}
+#markerDetails{
+  text-align: center;
+  margin-top: 0px;
+}
