@@ -24,7 +24,6 @@ html, body {
 }
 .searchButton{
   display: inline-flex;
-  margin-left: -200px;
 }
 .searchButton > p{
   font-size: 12px;
@@ -114,7 +113,7 @@ select, input{
   background-color: #DDEEFF;
   margin: 10px 0px;
   padding:20px;
-  flex-direction: row !important;
+  
 }
 .card > *{
   margin-top: 20px;
@@ -138,6 +137,9 @@ select, input{
 .card > #subInfos > button:hover{
   color:#2ED801!important;
   background-color: #EDF6EB;
+}
+.col-md-2{
+  margin-bottom: 1rem;
 }
 #titleAndRegion {
   color: #145b90;
@@ -251,4 +253,75 @@ select, input{
 #markerDetails{
   text-align: center;
   margin-top: 0px;
+}
+
+@media screen and (max-width: 640px) {
+  .titleSearch {
+    margin-left: 50px;
+  }
+  .card{
+    text-align: center;
+  }
+  .card > *{
+    width: 100%;
+    flex-direction: column;
+  }
+  .card > img{
+    width: 100%;
+  }
+  .card > h6, .card > #titleAndRegion{
+    display: block;
+  }
+  #markerAndTown {
+    width: 100%;
+  }
+  #subInfos {
+    width: 100%;
+  }
+  .inputWrapper{
+    width: 100%;
+    margin-left: 25px;
+  }
+  .filterIntro{
+    margin-left: 25px;
+  }
+  .searchButton{
+    display: block;
+    margin: auto;
+    margin-top: auto;
+    margin-top: 10px;
+    margin-left: 25px;
+  }
+  .searchButton > p{
+    position: initial;
+  }
+}
+@media screen and (min-width: 640px) {
+  .card{
+    flex-direction: row !important;
+  }
+  .searchButton{
+    margin-left: 0px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .col-md-2{
+    margin-bottom: 0px;
+  }
+  .row{
+    width: 900px;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .searchButton{
+    margin-left: -200px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .searchButton{
+    margin-left: -200px;
+  }
+  .row{
+    width: 90%;
+  }
 }
