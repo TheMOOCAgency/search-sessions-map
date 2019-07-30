@@ -5,10 +5,21 @@
   height: 50vh;
   width: 100%;
 }
+
+#content {
+    background: transparent !important;
+    min-height: 0px !important;
+    height: auto !important;
+}
 #mapWrapper{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+button{
+text-shadow: none !important;	
+	
 }
 html, body {
   height: 100%;
@@ -24,7 +35,6 @@ html, body {
 }
 .searchButton{
   display: inline-flex;
-  margin-left: -200px;
 }
 .searchButton > p{
   font-size: 12px;
@@ -34,10 +44,21 @@ html, body {
   top: 45px;
   text-decoration: underline;
   display: none;
+
 }
+
+.searchButton > button{
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+}
+
 .searchButton > button:hover{
-  color:#2ED801!important;
   background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
 }
 .row{
   display: inline-flex;
@@ -107,9 +128,16 @@ select, input{
 #resultsWrapper{
   padding: 20px;
 }
+#reinitializer{
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+}
 #reinitializer:hover{
-  color: #3562C5;
   cursor: pointer;
+  transform: scale(0.9);
 }
 .card{
   background-color: #DDEEFF;
@@ -135,10 +163,17 @@ select, input{
   height: 50px;
   color:  #EDF6EB;
   border-radius: 0px;
+  text-shadow: none !important;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
 }
 .card > #subInfos > button:hover{
-  color:#2ED801!important;
   background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
 }
 #titleAndRegion {
   color: #145b90;
@@ -207,10 +242,17 @@ select, input{
   border-radius: 0px;
   height: 20px;
   padding-top: 3px;
+  text-shadow: none !important;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
 }
 #markerRegistration > button:hover{
-  color: #3562C5;
   background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
 }
 #markerFirstHeading{
   font-size: 14px;
@@ -267,3 +309,71 @@ select, input{
 /* modif Daivis */
 /* modif Daivis */
 /* modif Daivis */
+
+@media screen and (max-width: 640px) {
+  .titleSearch {
+    margin-left: 50px;
+  }
+  .card{
+    text-align: center;
+  }
+  .card > *{
+    width: 100%;
+    flex-direction: column;
+  }
+  .card > img{
+    width: 100%;
+  }
+  .card > h6, .card > #titleAndRegion{
+    display: block;
+  }
+  #markerAndTown {
+    width: 100%;
+  }
+  #subInfos {
+    width: 100%;
+  }
+  .inputWrapper{
+    width: 100%;
+    margin-left: 25px;
+  }
+  .filterIntro{
+    margin-left: 25px;
+  }
+  .searchButton{
+    display: block;
+    margin: auto;
+    margin-top: auto;
+    margin-top: 10px;
+    margin-left: 25px;
+  }
+  .searchButton > p{
+    position: initial;
+  }
+}
+@media screen and (min-width: 640px) {
+  .card{
+    flex-direction: row !important;
+  }
+  .searchButton{
+    margin-left: 0px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .col-md-2{
+    margin-bottom: 0px;
+  }
+  .row{
+    width: 900px;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .searchButton{
+    margin-left: -200px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .row{
+    width: 90%;
+  }
+}

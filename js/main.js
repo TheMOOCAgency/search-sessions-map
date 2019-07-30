@@ -97,6 +97,7 @@ var date_fin;
 var course_id;
 var session_id;
 var enrollment_action;
+var markerSaved;
 
 // Data Base loading, as a callback of googleapis. When DB is loaded, we show the map and the filters bar
 var startAPI = function() {
@@ -120,8 +121,8 @@ var startAPI = function() {
 			}
 			
             // locations =  locations.string.split(",").map(Number);
-            console.log(locations)
-            console.log(typeof(locations))
+            // console.log(locations)
+            // console.log(typeof(locations))
             resolve(setDatas());
         }
     });
@@ -314,12 +315,12 @@ function initMap() {
 
     // create popup on markers
     (function() {
-        var markerSaved;
         // popup contents for markers
         var contentString = function(marker) {
             if (marker) {
 
                 markerSaved = marker;
+                console.log(markerSaved)
 
                 // We create a liste with every sessions possible for the training
                 var getDatesList = function(dates) {
@@ -374,29 +375,34 @@ function initMap() {
         }
 
         // show popup on marker click.
-        var clickedMarker;
-        for (let i = 0; i < markers.length; i++) {
-            var marker = markers[i];
-            markers[i].addListener('click', function() {
-                if (clickedMarker) {
-                    clickedMarker.close();
-                }
-                clickedMarker = infowindow(markerLocations[i]);
-                clickedMarker.open(map, markers[i]);
-
-                google.maps.event.addListener(clickedMarker, 'domready', function() {
-                    for (let j = 0; j < markerSaved.sessions.length; j++) {
-                        var thisClickedSession = JSON.parse(JSON.stringify(markerSaved));
-                        thisClickedSession.sessions = markerSaved.sessions[j];
-                        displayRegistration('#subscribeMarker' + j, thisClickedSession);
-                    }
-                });
-            });
+        for (var i = 0; i < markers.length; i++) {
+            console.log(i);
+            setMarkerClickable(markers[i], markerLocations[i], infowindow);
         }
     })();
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    });
+}
+
+var setMarkerClickable = function (marker, markerLocation, infowindow) {
+    var clickedMarker;
+    marker.addListener('click', function() {
+        console.log(marker);
+        if (clickedMarker) {
+            clickedMarker.close();
+        }
+        clickedMarker = infowindow(markerLocation);
+        clickedMarker.open(map, marker);
+
+        google.maps.event.addListener(clickedMarker, 'domready', function() {
+            for (var j = 0; j < markerSaved.sessions.length; j++) {
+                var thisClickedSession = JSON.parse(JSON.stringify(markerSaved));
+                thisClickedSession.sessions = markerSaved.sessions[j];
+                displayRegistration('#subscribeMarker' + j, thisClickedSession);
+            }
+        });
     });
 }
 
@@ -473,7 +479,7 @@ function filterMarkers() {
                 var locationDate;
 
                 // Check in every dates (j) if there at least one date wich is OK with the search, if not, return false
-                for (let j = 0; j < location.sessions.length; j++) {
+                for (var j = 0; j < location.sessions.length; j++) {
                     locationDate = momentification(location.sessions[j].periode.debut);
                     if (moment(locationDate).isAfter(date1) && moment(locationDate).isBefore(date2)) {
                         testDates = true;
@@ -532,7 +538,7 @@ function displayResults(selectedLocations) {
                 '</h4>' +
                 '</div>';
             $('#results').append(monthLabel)
-            for (let i = 0; i < sessionsInAMonth.session.length; i++) {
+            for (var i = 0; i < sessionsInAMonth.session.length; i++) {
                 var session = sessionsInAMonth.session[i];
                 index++;
                 var id = 'subscribe' + index;
@@ -548,7 +554,7 @@ function displayResults(selectedLocations) {
                         '<img src="/media/microsite/inveest/search-sessions-map/icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>' +
                         '<h6 style="color:green">inscriptions ouvertes</h6>' +
                         '<button id=' + id + ' class="secondColorBg mainColor textBold">S\'inscrire</button>' +
-                        '</div>';
+                        '</div>'; 
                 }
                 var courseReview =
                     '<div class="card" >' +
