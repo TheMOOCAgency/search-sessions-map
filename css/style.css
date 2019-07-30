@@ -164,6 +164,7 @@ select, input{
   color:  #EDF6EB;
   border-radius: 0px;
   text-shadow: none !important;
+  margin-top: -15px;
   -webkit-transition: all .5s ease-in-out;
   -moz-transition: all .5s ease-in-out;
   -o-transition: all .5s ease-in-out;

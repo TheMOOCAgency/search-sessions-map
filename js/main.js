@@ -598,11 +598,8 @@ var displayRegistration = function(id, registration) {
         session_id = registration.sessions.id;
         enrollment_action = registration.sessions.enrollment_action;
         date_debut = registration.sessions.periode.debut;
-        date_fin = registration.sessions.periode.fin;
-
-        console.log(urlForm + '?of=' + of +'&session_id=' + session_id + '&course_id=' + course_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin);
-
+        date_fin = registration.sessions.periode.fin
         // redirect the user to the form
-        window.open(urlForm + '?of=' + of +'&session_id=' + session_id + '&course_id=' + course_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin);
+        window.location.href = urlForm + '?of=' + of +'&session_id=' + session_id + '&course_id=' + course_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin;
     });
 }
