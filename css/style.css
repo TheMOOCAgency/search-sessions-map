@@ -166,7 +166,7 @@ select, input{
 .cardStye{
   background-color: #DDEEFF;
   margin: 10px 0px;
-  padding:20px;
+  padding: 36px 45px;
   flex-direction: row !important;
 }
 .cardStye > *{
@@ -193,8 +193,36 @@ select, input{
   transition: all .5s ease-in-out;
   padding: 0px 15px;
   vertical-align: middle !important;
+  margin-top: 5px;
+  
 }
+
+.subInfosButton > button{
+
+  color:  #EDF6EB;
+  border-radius: 0px;
+  text-shadow: none !important;
+  margin-top: -15px;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  padding: 11px 15px;
+  vertical-align: middle !important;
+  margin-top: 5px;
+  border-radius: 5px;
+  
+}
+
+
 .cardStye > #subInfos > button:hover{
+  background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
+}
+
+.subInfosButton > button:hover{
   background-color: #EDF6EB;
   text-shadow: none !important;
   transform: scale(0.9);

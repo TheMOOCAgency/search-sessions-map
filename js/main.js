@@ -550,11 +550,12 @@ function displayResults(selectedLocations) {
                 // PUT HERE SOME TEST TO CHECK IF REGISTRATION DATE STILL OK /!\
                 if (true) {
                     openRegistration =
-                        '<div id="subInfos" class="col-lg-4 col-md-12 col-sm-12">' +
+                        '<div id="subInfos" class="col-lg-3 col-md-12 col-sm-12">' +
                         '<img src="/media/microsite/inveest/ssm/icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>' +
-                        '<h6 style="color:green">inscriptions ouvertes</h6>' +
+                        '<h6 style="color:green">inscriptions ouvertes</h6></div>' +
+						'<div class="col-lg-1 col-md-12 col-sm-12 subInfosButton">' +
                         '<button id=' + id + ' class="secondColorBg mainColor textBold">S\'inscrire</button>' +
-                        '</div>'; 
+                        '</div></div>'; 
                 }
                 var courseReview =
                     '<div class="cardStye row" >' +
