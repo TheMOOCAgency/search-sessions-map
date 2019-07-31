@@ -62,7 +62,6 @@ html, body {
 }
 .row{
   display: inline-flex;
-  width: 90%;
 }
 p{
   margin:0;
@@ -73,6 +72,7 @@ p{
   justify-content: center;
   padding-left: 5px;
   padding-right: 5px;
+  margin-right: 25px;
 }
 .titleSearch{
   width: 400px;
@@ -88,6 +88,7 @@ p{
 .custom-select{
   margin: 0!important;
   border: 1px solid #3562C5;
+  width: 150px;
 }
 .mainColor{
   color:#4983FF
@@ -358,23 +359,5 @@ select, input{
   }
   .searchButton{
     margin-left: 0px;
-  }
-}
-@media screen and (min-width: 768px) {
-  .col-md-2{
-    margin-bottom: 0px;
-  }
-  .row{
-    width: 900px;
-  }
-}
-@media screen and (min-width: 1000px) {
-  .searchButton{
-    margin-left: -200px;
-  }
-}
-@media screen and (min-width: 1200px) {
-  .row{
-    width: 90%;
   }
 }
