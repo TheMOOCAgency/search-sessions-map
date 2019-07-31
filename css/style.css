@@ -1,0 +1,414 @@
+.row {	
+display:-ms-flexbox;	
+}
+
+
+
+#banner{
+  background-color:#4882FF;
+}
+#map {
+  height: 50vh;
+  width: 100%;
+}
+
+#content {
+    background: transparent !important;
+    min-height: 0px !important;
+    height: auto !important;
+}
+#mapWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+button{
+text-shadow: none !important;	
+	
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0px;
+}
+#searchWrapper{
+  padding:0px;
+  max-width: unset !important;
+min-width: unset !important;
+}
+#datepicker {
+
+    color: #EDF6EB;
+    border: 1px solid #3562C5;
+    height: 38px;
+    box-shadow: none;
+    color: white !important;
+    text-decoration: ;
+    font-style: normal;
+
+}
+.searchButton{
+  display: inline-flex;
+  height:38px;
+}
+.searchButton > p{
+  font-size: 12px;
+  color: #EDF6EB;
+  position: absolute;
+  left: 16px;
+  top: 45px;
+  text-decoration: underline;
+  display: none;
+
+}
+
+.searchButton > button{
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+}
+
+.searchButton > button:hover{
+  background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
+}
+
+p{
+  margin:0;
+}
+.inputWrapper{
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  padding:0px;
+  margin-top:2px;
+
+}
+
+.nineLeft{
+	padding-left:9px;
+}
+.titleSearch{
+  width: 400px;
+  margin-left: 200px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-weight: 900;
+  font-size:2rem;
+}
+.hide{
+  display: none;
+}
+.custom-select{
+  margin: 0!important;
+  border: 1px solid #3562C5;
+  width: 100%;
+}
+.mainColor{
+  color:#4983FF
+}
+.secondColor{
+  color:#f7c30d;
+}
+.secondColorBg{
+  background-color:#2ED801 !important;
+  background-image :none !important; 
+}
+.filterIntro{
+  font-weight: bold;
+  display: inline-flex;
+  color: #EDF6EB;
+  margin-right: 20px;
+}
+.textBold{
+  font-weight: bold;
+}
+button{
+  border: 0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+select, input{
+  background-color: #3562C5!important;
+  color: #EDF6EB!important;
+  font-weight: 500!important;
+}
+#search, #register{
+  color: #EDF6EB;
+  padding: 6px 18px;
+}
+#searchCourses{
+  padding: 41px 19px;
+}
+#resultsWrapper{
+  padding: 20px;
+}
+#reinitializer{
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+
+}
+#reinitializer:hover{
+  cursor: pointer;
+  transform: scale(0.9);
+}
+.cardStye{
+  background-color: #DDEEFF;
+  margin: 10px 0px;
+  padding:20px;
+  flex-direction: row !important;
+}
+.cardStye > *{
+  
+ 
+}
+.cardStye > img{
+  width: 6%;
+}
+.cardStye > h6, .cardStye > #titleAndRegion{
+  display: inline-block;
+  /* width: 200px; */
+}
+.cardStye > #subInfos > button{
+
+  color:  #EDF6EB;
+  border-radius: 0px;
+  text-shadow: none !important;
+  margin-top: -15px;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  padding: 0px 15px;
+  vertical-align: middle !important;
+}
+.cardStye > #subInfos > button:hover{
+  background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
+}
+#titleAndRegion {
+  color: #145b90;
+}
+#titleAndRegion > p {
+  font-style: italic;
+}
+/* #trainingDetails{
+  display: inline-block;
+  width: 400px;
+} */
+.monthBar{
+  background-color: #4882FF;
+  color: #EDF6EB;
+  height: 50px;
+  padding-left: 75px;
+  padding-top: 16px;
+}
+.monthBar > h4{
+  color:white!important;
+  font-size: 16px;
+}
+#subInfos{
+  padding-top: 15px;
+  width: 40%;
+}
+#subInfos > *{
+  display: inline-block;
+}
+#subInfos > img{
+  margin-right: 20px;
+}
+#subInfos > h6{
+  margin-right: 20px;
+}
+#markerAndTown{
+  width: 14%;
+  padding-top: 15px;
+}
+#markerAndTown > *{
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 400;
+  color: #5E747D;
+}
+#resultsWrapper{
+  width: 80%;
+  margin: 0 auto;
+}
+#resultsWrapper > div{
+  color: #145b90;
+}
+#resultsWrapper > div > h4{
+  display: inline-block;
+}
+#markerLocationInfos{
+  text-align: center;
+}
+#markerLocationInfos > img{
+  position: relative;
+  top: -5px;
+}
+#markerRegistration > button{
+  color: #EDF6EB;
+  background-color: #3562C5;
+  border-radius: 0px;
+  height: 20px;
+  padding-top: 3px;
+  text-shadow: none !important;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+}
+#markerRegistration > button:hover{
+  background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
+}
+#markerFirstHeading{
+  font-size: 14px;
+  font-weight: 900;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #145b90;
+}
+#markerFirstHeading > span{
+  font-weight: 400;
+}
+#markerBodyContent{
+  color: #0a4e56;
+  text-align: center;
+}
+#markerTrainingDates{
+  display: inline-block;
+  list-style-type: none;
+  margin-bottom: 0px;
+}
+#markerTrainingDates > li{
+  background-color: #EDF6EB;
+  font-weight: 500;
+  margin-bottom: 6px;
+  height: 20px;
+}
+#markerRegistration{
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10px;
+  text-align: center;
+}
+#markerTown{
+  display: inline-block;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 0px;
+  color: #145b90;
+}
+#markerDetails{
+  text-align: center;
+  margin-top: 0px;
+}
+
+/* modif Daivis */
+/* modif Daivis */
+/* modif Daivis */
+.whiteH6{
+	color:#145b90;
+}
+
+/* modif Daivis */
+/* modif Daivis */
+/* modif Daivis */
+/* modif Daivis */
+
+@media screen and (max-width: 640px) {
+.nineLeftFirstChild{
+	padding-left:9px;
+	
+} 
+
+ .titleSearch {
+    text-align: center;
+	width:100%;
+	margin:0px;
+	font-size:20px;
+	padding:30px;
+  }
+  
+  .monthBar {
+    text-align: center;
+    padding: 10px 20px;
+
+}
+
+
+  .cardStye{
+    text-align: center;
+  }
+  .cardStye > *{
+    width: 100%;
+    flex-direction: column;
+  }
+  .cardStye > img{
+    width: 100%;
+  }
+  .cardStye > h6, .cardStye > #titleAndRegion{
+    display: block;
+  }
+  #markerAndTown {
+    width: 100%;
+  }
+  #subInfos {
+    width: 100%;
+  }
+  .inputWrapper{
+    width: 90%;
+    margin-left: 25px;
+  }
+  .filterIntro{
+    margin-left: 25px;
+  }
+  .searchButton{
+    display: block;
+    margin: auto;
+    margin-top: auto;
+    margin-top: 10px;
+    margin-left: 25px;
+  }
+  .searchButton > p{
+    position: initial;
+  }
+  .custom-select {
+
+    margin: 0 !important;
+    border: 1px solid #3562C5;
+    width: 90%;
+
+	}
+	
+	.input-group {
+    width: 90%;
+
+}
+}
+@media screen and (min-width: 640px) {
+  .cardStye{
+    flex-direction: row !important;
+  }
+  .searchButton{
+    margin-left: 0px;
+  }
+}
