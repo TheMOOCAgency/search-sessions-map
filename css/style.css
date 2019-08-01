@@ -23,8 +23,23 @@ display:-ms-flexbox;
   justify-content: center;
 }
 
+.cancelBtn{
+	
+background-color: #4983FF!important;
+background-image: none !important;
+	
+}
 
-
+.applyBtn{
+	
+background-color: #4983FF!important;
+background-image: none !important;
+	
+}
+.container{
+	
+  min-width:200px;
+}
 
 button{
 text-shadow: none !important;	
@@ -435,8 +450,33 @@ select, input{
 @media screen and (min-width: 640px) {
   .cardStye{
     flex-direction: row !important;
+	padding: 37px 82px;
   }
   .searchButton{
     margin-left: 0px;
   }
 }
+
+
+
+@media screen and (min-width: 640px) and (max-width: 1024px){
+.cardStye {
+
+    padding: 37px 82px;
+
+}
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white !important;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: white !important;
+}
+
