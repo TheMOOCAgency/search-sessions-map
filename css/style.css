@@ -325,3 +325,6 @@ select, input{
     width: 90%;
   }
 }
+#datepicker:placeholder {
+  color: white;
+}

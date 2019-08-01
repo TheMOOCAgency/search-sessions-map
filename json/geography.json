@@ -1,0 +1,7 @@
+[
+    {"departement": "Gironde", "region":"Nouvelle-Aquitaine"},
+    {"departement": "Loire-Atlantique", "region":"Pays de la Loire"},
+    {"departement": "Paris", "region":"Île-de-France"},
+    {"departement": "Rhône", "region":"Auvergne-Rhône-Alpes"},
+    {"departement": "Haute-Garonne", "region":"Occitanie"}
+]
