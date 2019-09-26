@@ -88,7 +88,6 @@ var saveMarkerLocations;
 var sessionsLocations;
 var getFieldValues;
 var fields;
-var urlForm = '/register'; // The form used for registration (wich will be improved with datas collected when user click on a session subscription button (see line 'redirect the user to the form'))
 var urlLocations = '/media/microsite/inveest/ssm/json/locations.json'; // The database containing all existing trainings for the microsite
 var of ;
 var ville;
@@ -98,6 +97,18 @@ var course_id;
 var session_id;
 var enrollment_action;
 var markerSaved;
+
+if(user_authenticated==="true"){
+    var baseUrl = '/tma_apps/register_to_session'
+}
+else{
+    var baseUrl = '/register'
+}
+
+
+ ; // The form used for registration (wich will be improved with datas collected when user click on a session subscription button (see line 'redirect the user to the form'))
+
+
 
 // Data Base loading, as a callback of googleapis. When DB is loaded, we show the map and the filters bar
 var startAPI = function() {
@@ -554,7 +565,7 @@ function displayResults(selectedLocations) {
                         '<img src="/media/microsite/inveest/ssm/icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>' +
                         '<h6 style="color:green">inscriptions ouvertes</h6></div>' +
 						'<div class="col-lg-1 col-md-12 col-sm-12 subInfosButton">' +
-                        '<button id=' + id + ' class="secondColorBg mainColor textBold">S\'inscrire</button>' +
+                        '<button id=' + id + ' class="secondColorBg mainColor textBold register-btn">S\'inscrire</button>' +
                         '</div></div>'; 
                 }
                 var courseReview =
@@ -593,7 +604,7 @@ $("#search").on('click', function() {
 var displayRegistration = function(id, registration) {
     $(id).on('click', function() {
 
-        of = registration.of.nom;
+        of = registration.of.value;
         ville = registration.sites.adresse.ville;
         course_id = registration.sessions.course_id;
         session_id = registration.sessions.id;
@@ -601,6 +612,20 @@ var displayRegistration = function(id, registration) {
         date_debut = registration.sessions.periode.debut;
         date_fin = registration.sessions.periode.fin
         // redirect the user to the form
-        window.location.href = urlForm + '?of=' + of +'&session_id=' + session_id + '&course_id=' + course_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin;
+        console.log(baseUrl + '?organisme=' + encodeURIComponent(of) +'&session_id=' + session_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&dates_formation=' + date_debut + '-' + date_fin)
+        window.location.href = baseUrl + '?organisme=' + encodeURIComponent(of) +'&session_id=' + session_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&dates_formation=' + date_debut + '-' + date_fin;
+        
     });
 }
+
+/*IF USER IS REGISTERED TO A SESSION PREVENT REGISTER TO NEW SESSION*/
+
+$(document).ready(function(){
+    if(is_user_registered.toLowerCase()==="true"){
+        $('.register-btn').each(function(){
+            $(this).prop("disabled",true)
+        })
+        $('#resultsWrapper').prepend("<p style='padding:20px' class='text-center'>Vous êtes déjà inscrit à une session présentielle et ne pouvez pas vous inscrire de nouveau.<br> Contactez votre organisme de formation pour connaître les modalités de changement de session</p>")
+    }
+})
+
