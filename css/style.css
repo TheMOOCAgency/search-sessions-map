@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+.row {	
+display:-ms-flexbox;	
+}
+
+
+
+=======
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 #banner{
   background-color:#4882FF;
 }
@@ -17,6 +26,27 @@
   justify-content: center;
 }
 
+<<<<<<< HEAD
+.cancelBtn{
+	
+background-color: #4983FF!important;
+background-image: none !important;
+	
+}
+
+.applyBtn{
+	
+background-color: #4983FF!important;
+background-image: none !important;
+	
+}
+.container{
+	
+  min-width:200px;
+}
+
+=======
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 button{
 text-shadow: none !important;	
 	
@@ -28,6 +58,25 @@ html, body {
 }
 #searchWrapper{
   padding:0px;
+<<<<<<< HEAD
+  max-width: unset !important;
+min-width: unset !important;
+}
+#datepicker {
+
+    color: #EDF6EB;
+    border: 1px solid #3562C5;
+    height: 38px;
+    box-shadow: none;
+    color: white !important;
+    text-decoration: ;
+    font-style: normal;
+
+}
+.searchButton{
+  display: inline-flex;
+  height:38px;
+=======
 }
 #datepicker{
   color: #EDF6EB;
@@ -35,12 +84,18 @@ html, body {
 }
 .searchButton{
   display: inline-flex;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 }
 .searchButton > p{
   font-size: 12px;
   color: #EDF6EB;
+<<<<<<< HEAD
+  position: absolute;
+  left: 16px;
+=======
   position: relative;
   left: -120px;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
   top: 45px;
   text-decoration: underline;
   display: none;
@@ -60,9 +115,13 @@ html, body {
   text-shadow: none !important;
   transform: scale(0.9);
 }
+<<<<<<< HEAD
+
+=======
 .row{
   display: inline-flex;
 }
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 p{
   margin:0;
 }
@@ -70,9 +129,19 @@ p{
   display: flex;
   /* align-items: center; */
   justify-content: center;
+<<<<<<< HEAD
+  padding:0px;
+  margin-top:2px;
+
+}
+
+.nineLeft{
+	padding-left:9px;
+=======
   padding-left: 5px;
   padding-right: 5px;
   margin-right: 25px;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 }
 .titleSearch{
   width: 400px;
@@ -88,7 +157,11 @@ p{
 .custom-select{
   margin: 0!important;
   border: 1px solid #3562C5;
+<<<<<<< HEAD
+  width: 100%;
+=======
   width: 150px;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 }
 .mainColor{
   color:#4983FF
@@ -122,9 +195,16 @@ select, input{
 }
 #search, #register{
   color: #EDF6EB;
+<<<<<<< HEAD
+  padding: 6px 18px;
+}
+#searchCourses{
+  padding: 41px 19px;
+=======
 }
 #searchCourses{
   padding: 20px 0px;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 }
 #resultsWrapper{
   padding: 20px;
@@ -135,11 +215,53 @@ select, input{
   -o-transition: all .5s ease-in-out;
   -ms-transition: all .5s ease-in-out;
   transition: all .5s ease-in-out;
+<<<<<<< HEAD
+
+=======
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
 }
 #reinitializer:hover{
   cursor: pointer;
   transform: scale(0.9);
 }
+<<<<<<< HEAD
+.cardStye{
+  background-color: #DDEEFF;
+  margin: 10px 0px;
+  padding: 36px 45px;
+  flex-direction: row !important;
+}
+.cardStye > *{
+  
+ 
+}
+.cardStye > img{
+  width: 6%;
+}
+.cardStye > h6, .cardStye > #titleAndRegion{
+  display: inline-block;
+  /* width: 200px; */
+}
+.cardStye > #subInfos > button{
+
+  color:  #EDF6EB;
+  border-radius: 0px;
+  text-shadow: none !important;
+  margin-top: -15px;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  padding: 0px 15px;
+  vertical-align: middle !important;
+  margin-top: 5px;
+  
+}
+
+.subInfosButton > button{
+
+=======
 .card{
   background-color: #DDEEFF;
   margin: 10px 0px;
@@ -162,6 +284,7 @@ select, input{
 }
 .card > #subInfos > button{
   height: 50px;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
   color:  #EDF6EB;
   border-radius: 0px;
   text-shadow: none !important;
@@ -171,8 +294,26 @@ select, input{
   -o-transition: all .5s ease-in-out;
   -ms-transition: all .5s ease-in-out;
   transition: all .5s ease-in-out;
+<<<<<<< HEAD
+  padding: 11px 15px;
+  vertical-align: middle !important;
+  margin-top: 5px;
+  border-radius: 5px;
+  
+}
+
+
+.cardStye > #subInfos > button:hover{
+  background-color: #EDF6EB;
+  text-shadow: none !important;
+  transform: scale(0.9);
+}
+
+.subInfosButton > button:hover{
+=======
 }
 .card > #subInfos > button:hover{
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
   background-color: #EDF6EB;
   text-shadow: none !important;
   transform: scale(0.9);
@@ -313,6 +454,39 @@ select, input{
 /* modif Daivis */
 
 @media screen and (max-width: 640px) {
+<<<<<<< HEAD
+.nineLeftFirstChild{
+	padding-left:9px;
+	
+} 
+
+ .titleSearch {
+    text-align: center;
+	width:100%;
+	margin:0px;
+	font-size:20px;
+	padding:30px;
+  }
+  
+  .monthBar {
+    text-align: center;
+    padding: 10px 20px;
+
+}
+
+
+  .cardStye{
+    text-align: center;
+  }
+  .cardStye > *{
+    width: 100%;
+    flex-direction: column;
+  }
+  .cardStye > img{
+    width: 100%;
+  }
+  .cardStye > h6, .cardStye > #titleAndRegion{
+=======
   .titleSearch {
     margin-left: 50px;
   }
@@ -327,6 +501,7 @@ select, input{
     width: 100%;
   }
   .card > h6, .card > #titleAndRegion{
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
     display: block;
   }
   #markerAndTown {
@@ -336,7 +511,11 @@ select, input{
     width: 100%;
   }
   .inputWrapper{
+<<<<<<< HEAD
+    width: 90%;
+=======
     width: 100%;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
     margin-left: 25px;
   }
   .filterIntro{
@@ -352,12 +531,60 @@ select, input{
   .searchButton > p{
     position: initial;
   }
+<<<<<<< HEAD
+  .custom-select {
+
+    margin: 0 !important;
+    border: 1px solid #3562C5;
+    width: 90%;
+
+	}
+	
+	.input-group {
+    width: 90%;
+
+}
+}
+@media screen and (min-width: 640px) {
+  .cardStye{
+    flex-direction: row !important;
+	padding: 37px 82px;
+=======
 }
 @media screen and (min-width: 640px) {
   .card{
     flex-direction: row !important;
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2
   }
   .searchButton{
     margin-left: 0px;
   }
+<<<<<<< HEAD
 }
+
+
+
+@media screen and (min-width: 640px) and (max-width: 1024px){
+.cardStye {
+
+    padding: 37px 82px;
+
+}
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white !important;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: white !important;
+}
+
+=======
+}
+>>>>>>> c8076298eab1bfd1e8cd02c011c75d4db07501d2

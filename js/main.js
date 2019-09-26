@@ -88,8 +88,7 @@ var saveMarkerLocations;
 var sessionsLocations;
 var getFieldValues;
 var fields;
-var urlForm = '/register'; // The form used for registration (wich will be improved with datas collected when user click on a session subscription button (see line 'redirect the user to the form'))
-var urlLocations = '/media/microsite/inveest/search-sessions-map/json/locations.json'; // The database containing all existing trainings for the microsite
+var urlLocations = '/media/microsite/inveest/ssm/json/locations.json'; // The database containing all existing trainings for the microsite
 var of ;
 var ville;
 var date_debut;
@@ -98,6 +97,18 @@ var course_id;
 var session_id;
 var enrollment_action;
 var markerSaved;
+
+if(user_authenticated==="true"){
+    var baseUrl = '/tma_apps/register_to_session'
+}
+else{
+    var baseUrl = '/register'
+}
+
+
+ ; // The form used for registration (wich will be improved with datas collected when user click on a session subscription button (see line 'redirect the user to the form'))
+
+
 
 // Data Base loading, as a callback of googleapis. When DB is loaded, we show the map and the filters bar
 var startAPI = function() {
@@ -245,19 +256,19 @@ function buildSearchBar(fields) {
     fields.map(function(field) {
         sortByAlphabet(field.values, 'name');
         if (field.type === 'select') {
-            var fieldInput = '<div class="col-md-2 inputWrapper"> <select class="custom-select mb-3" id="' + field.name + '"><option value="' + field.name + '">' + field.label + '</option>';
+            var fieldInput = '<div class="col-lg-2 col-md-12 col-sm-12 inputWrapper nineLeft"> <select class="custom-select mb-3" id="' + field.name + '"><option value="' + field.name + '">' + field.label + '</option>';
             field.values.map(function(value) {
                 fieldInput += '<option value="' + value.name + '">' + value.label + '</option>'
             })
             fieldInput += '</select>';
-            $('#searchCourses .row').append(fieldInput);
+            $('#datePickerWrap').after(fieldInput);
         } else if (field.type === 'dateRangePicker') {
             $('#datePickerWrap').removeClass('hide');
         }
     })
     var updateReinitializer = function() {
         if ($('#region')[0].value !== 'region' || $('#departement')[0].value !== 'departement' || $('#nom')[0].value !== 'nom' || $('#datepicker')[0].value !== '') {
-            $('#reinitializer')[0].style.display = 'initial';
+            $('#reinitializer')[0].style.display = 'block';
         } else {
             $('#reinitializer')[0].style.display = 'none';
         }
@@ -304,7 +315,7 @@ function initMap() {
                 fontSize: '10px'
             },
             icon: {
-                url: '/media/microsite/inveest/search-sessions-map/icons/trainingIcon.svg', // url
+                url: '/media/microsite/inveest/ssm/icons/trainingIcon.svg', // url
                 scaledSize: new google.maps.Size(30, 30), // scaled size
                 origin: new google.maps.Point(0, 0), // origin
                 anchor: new google.maps.Point(15, 30), // anchor
@@ -353,7 +364,7 @@ function initMap() {
                     '</div>';
                 content +=
                     '<div id="markerLocationInfos">' +
-                    '<img src="/media/microsite/inveest/search-sessions-map/icons/trainingIcon.svg" alt="icône bleu de localisation" height="15px" width="15px" top="-5px"/>' +
+                    '<img src="/media/microsite/inveest/ssm/icons/trainingIcon.svg" alt="icône bleu de localisation" height="15px" width="15px" top="-5px"/>' +
                     '<p id="markerTown">' + marker.sites.adresse.ville + '</p>' +
                     // '<div id="markerDetails">' +
                     // '<p>' + marker.adresse + '</p>'+
@@ -543,29 +554,30 @@ function displayResults(selectedLocations) {
                 index++;
                 var id = 'subscribe' + index;
                 var openRegistration =
-                    '<div id="subInfos">' +
-                    '<img src="/media/microsite/inveest/search-sessions-map/icons/error.svg" alt="croix blanche sur rond rouge" height="25px" width="25px"/>' +
+                    '<div id="subInfos" class="col-lg-4  col-md-12 col-sm-12">' +
+                    '<img src="/media/microsite/inveest/ssm/icons/error.svg" alt="croix blanche sur rond rouge" height="25px" width="25px"/>' +
                     '<h6 style="color:red"">inscriptions fermées</h6>';
                 '</div>';
                 // PUT HERE SOME TEST TO CHECK IF REGISTRATION DATE STILL OK /!\
                 if (true) {
                     openRegistration =
-                        '<div id="subInfos">' +
-                        '<img src="/media/microsite/inveest/search-sessions-map/icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>' +
-                        '<h6 style="color:green">inscriptions ouvertes</h6>' +
-                        '<button id=' + id + ' class="secondColorBg mainColor textBold">S\'inscrire</button>' +
-                        '</div>'; 
+                        '<div id="subInfos" class="col-lg-3 col-md-12 col-sm-12">' +
+                        '<img src="/media/microsite/inveest/ssm/icons/checked.svg" alt="v blanc sur rond vert" height="25px" width="25px"/>' +
+                        '<h6 style="color:green">inscriptions ouvertes</h6></div>' +
+						'<div class="col-lg-1 col-md-12 col-sm-12 subInfosButton">' +
+                        '<button id=' + id + ' class="secondColorBg mainColor textBold register-btn">S\'inscrire</button>' +
+                        '</div></div>'; 
                 }
                 var courseReview =
-                    '<div class="card" >' +
-                    '<img src="/media/microsite/inveest/search-sessions-map/icons/presentation.svg" alt="icône de personnage faisant une présentation sur un tableau" height="50px" width="50px"/>' +
-                    '<h6 class="whiteH6">Session du ' + session.sessions.periode.debut + ' au ' + session.sessions.periode.fin + '</h6>' +
-                    '<div id="titleAndRegion" >' +
+                    '<div class="cardStye row" >' +
+                    '<div class="col-lg-1  col-md-12 col-sm-12"><img src="/media/microsite/inveest/ssm/icons/presentation.svg" alt="icône de personnage faisant une présentation sur un tableau" height="50px" width="50px"/></div>' +
+                    '<div class="col-lg-2  col-md-12 col-sm-12"><h6 class="whiteH6">Session du ' + session.sessions.periode.debut + ' au ' + session.sessions.periode.fin + '</h6></div>' +
+                    '<div id="titleAndRegion" class= "col-lg-3  col-md-12 col-sm-12 >' +
                     '<h6 class="whiteH6">' + session.of.nom + ' </h6>' +
                     '<p>' + session.sites.adresse.region + '</p>' +
                     '</div>' +
-                    '<div id="markerAndTown" >' +
-                    '<img src="/media/microsite/inveest/search-sessions-map/icons/trainingIcon.svg" alt="icône bleu de localisation" height="25px" width="25px"/>' +
+                    '<div id="markerAndTown" class="col-lg-2  col-md-12 col-sm-12" >' +
+                    '<img src="/media/microsite/inveest/ssm/icons/trainingIcon.svg" alt="icône bleu de localisation" height="25px" width="25px"/>' +
                     '<h6>' + session.sites.adresse.ville + '</h6>' +
                     '</div>' +
                     openRegistration +
@@ -592,7 +604,7 @@ $("#search").on('click', function() {
 var displayRegistration = function(id, registration) {
     $(id).on('click', function() {
 
-        of = registration.of.nom;
+        of = registration.of.value;
         ville = registration.sites.adresse.ville;
         course_id = registration.sessions.course_id;
         session_id = registration.sessions.id;
@@ -600,6 +612,20 @@ var displayRegistration = function(id, registration) {
         date_debut = registration.sessions.periode.debut;
         date_fin = registration.sessions.periode.fin
         // redirect the user to the form
-        window.location.href = urlForm + '?of=' + of +'&session_id=' + session_id + '&course_id=' + course_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&date_debut=' + date_debut + '&date_fin=' + date_fin;
+        console.log(baseUrl + '?organisme=' + encodeURIComponent(of) +'&session_id=' + session_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&dates_formation=' + date_debut + '-' + date_fin)
+        window.location.href = baseUrl + '?organisme=' + encodeURIComponent(of) +'&session_id=' + session_id + '&enrollment_action=' + enrollment_action + '&ville=' + ville + '&dates_formation=' + date_debut + '-' + date_fin;
+        
     });
 }
+
+/*IF USER IS REGISTERED TO A SESSION PREVENT REGISTER TO NEW SESSION*/
+
+$(document).ready(function(){
+    if(is_user_registered.toLowerCase()==="true"){
+        $('.register-btn').each(function(){
+            $(this).prop("disabled",true)
+        })
+        $('#resultsWrapper').prepend("<p style='padding:20px' class='text-center'>Vous êtes déjà inscrit à une session présentielle et ne pouvez pas vous inscrire de nouveau.<br> Contactez votre organisme de formation pour connaître les modalités de changement de session</p>")
+    }
+})
+
