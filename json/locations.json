@@ -2,7 +2,7 @@
     {
     "of": {
         "id": 0,
-        "nom": "Inveest Bordeaux",
+        "nom": "Greenflex Bordeaux",
         "value":"InveestBordeaux"
     },
     "sites": {
@@ -58,7 +58,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Inveest Nantes",
+        "nom": "Greenflex Nantes",
         "value":"InveestNantes"
     },
     "sites": {
@@ -111,7 +111,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Inveest Paris",
+        "nom": "Greenflex Paris",
         "value":"InveestParis"
     },
     "sites": {
@@ -139,25 +139,12 @@
         "id": 4,
         "site_id": 2,
         "periode": {
-            "debut": "16/10/2019",
-            "fin": "17/10/2019"
+            "debut": "20/10/2019",
+            "fin": "21/10/2019"
         },
         "inscription": {
             "debut": "16/09/2019",
             "fin": "16/10/2019"
-        }
-    }, {
-        "course_id": "course-v1%3Ainveest%2Binvest2019%2Binvest2019",
-        "enrollment_action": "enroll",
-        "id": 5,
-        "site_id": 2,
-        "periode": {
-            "debut": "20/11/2019",
-            "fin": "21/11/2019"
-        },
-        "inscription": {
-            "debut": "20/10/2020",
-            "fin": "20/11/2020"
         }
     }, {
         "course_id": "course-v1%3Ainveest%2Binvest2019%2Binvest2019",
@@ -190,7 +177,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Inveest Lyon",
+        "nom": "Greenflex Lyon",
         "value":"InveestLyon"
     },
     "sites": {
@@ -231,8 +218,8 @@
         "id": 9,
         "site_id": 3,
         "periode": {
-            "debut": "28/01/2020",
-            "fin": "29/01/2020"
+            "debut": "10/12/2019",
+            "fin": "11/12/2019"
         },
         "inscription": {
             "debut": "28/12/2019",
@@ -243,7 +230,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Inveest Toulouse",
+        "nom": "Greenflex Toulouse",
         "value":"InveestToulouse"
     },
     "sites": {
