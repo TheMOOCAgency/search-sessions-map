@@ -2,7 +2,7 @@
     {
     "of": {
         "id": 0,
-        "nom": "Greenflex Bordeaux",
+        "nom": "GreenFlex Bordeaux",
         "value":"InveestBordeaux"
     },
     "sites": {
@@ -58,7 +58,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Greenflex Nantes",
+        "nom": "GreenFlex Nantes",
         "value":"InveestNantes"
     },
     "sites": {
@@ -111,7 +111,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Greenflex Paris",
+        "nom": "GreenFlex Paris",
         "value":"InveestParis"
     },
     "sites": {
@@ -177,7 +177,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Greenflex Lyon",
+        "nom": "GreenFlex Lyon",
         "value":"InveestLyon"
     },
     "sites": {
@@ -230,7 +230,7 @@
 {
     "of": {
         "id": 0,
-        "nom": "Greenflex Toulouse",
+        "nom": "GreenFlex Toulouse",
         "value":"InveestToulouse"
     },
     "sites": {
